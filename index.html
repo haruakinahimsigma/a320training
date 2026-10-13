@@ -299,7 +299,7 @@ body{display:flex;flex-direction:column;font-family:var(--head)}
   font-family:var(--mono);font-size:10px;color:var(--text-dim);
   display:flex;justify-content:space-between;letter-spacing:1px;flex-shrink:0;
 }
-</style>
+.flight-deck-controls{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:10px}.control-card{background:#101019;border:1px solid #30303c;padding:10px;min-width:0}.control-title{font:10px var(--mono);letter-spacing:2px;color:#9999ad;border-bottom:1px solid #292938;padding-bottom:7px;margin-bottom:9px}.stick-area{height:145px;background:radial-gradient(ellipse,#20202c,#07070d 70%);border:1px solid #2c2c3d;position:relative;touch-action:none;border-radius:4px;overflow:hidden}.stick-cross{position:absolute;left:50%;top:50%;width:110px;height:110px;transform:translate(-50%,-50%);border:1px dashed #36364a;border-radius:50%}.stick-cross:before,.stick-cross:after{content:"";position:absolute;background:#29293a}.stick-cross:before{left:50%;top:0;bottom:0;width:1px}.stick-cross:after{top:50%;left:0;right:0;height:1px}.stick-handle{position:absolute;left:50%;top:50%;width:36px;height:36px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 25%,#55556a,#171722 70%);border:2px solid #77778b;box-shadow:0 3px 8px #000;touch-action:none}.control-readout{font:10px var(--mono);color:#8edcc5;display:flex;justify-content:space-between;margin-top:7px}.thrust-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.thrust-control{background:#08080e;border:1px solid #29293b;padding:8px;text-align:center}.thrust-control input{width:100%;accent-color:#ffa000;touch-action:pan-y}.thrust-value{font:12px var(--mono);color:#ffc36c;margin:5px 0}.control-btn{background:#090911;border:1px solid #373747;color:#c2c2cf;padding:8px 9px;font:10px var(--mono);cursor:pointer;margin:3px 2px 0 0}.control-btn.active{border-color:#00c87a;color:#00c87a}.system-status{font:10px/1.8 var(--mono);color:#a8a8b9;white-space:pre-line}.ecam-pages{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}.ecam-pages button{background:#090911;border:1px solid #373747;color:#aeb0c0;padding:7px 9px;font:10px var(--mono)}.ecam-pages button.active{color:#ffa000;border-color:#ffa000}.mcdu-screen{white-space:pre-line;min-height:105px}@media(max-width:850px){.flight-deck-controls{grid-template-columns:1fr 1fr}.control-card:last-child{grid-column:1/-1}}@media(max-width:600px){.flight-deck-controls{grid-template-columns:1fr}.control-card:last-child{grid-column:auto}.stick-area{height:130px}}</style>
 </head>
 <body>
 
@@ -411,6 +411,26 @@ body{display:flex;flex-direction:column;font-family:var(--head)}
               <button onclick="mcduKey('DIR')">DIR</button><button onclick="mcduKey('PROG')">PROG</button><button onclick="mcduKey('PERF')">PERF</button><button onclick="mcduKey('INIT')">INIT</button><button onclick="mcduKey('DATA')">DATA</button><button onclick="mcduKey('F-PLN')">F-PLN</button><button onclick="mcduKey('RAD')">RAD</button><button onclick="mcduKey('FUEL')">FUEL</button><button onclick="mcduKey('SEC')">SEC</button><button onclick="mcduKey('ATC')">ATC</button><button onclick="mcduKey('MENU')">MENU</button><button onclick="mcduKey('CLR')">CLR</button><button onclick="mcduKey('1')">1</button><button onclick="mcduKey('2')">2</button><button onclick="mcduKey('3')">3</button><button onclick="mcduKey('4')">4</button><button onclick="mcduKey('5')">5</button><button onclick="mcduKey('6')">6</button><button onclick="mcduKey('7')">7</button><button onclick="mcduKey('8')">8</button><button onclick="mcduKey('9')">9</button><button onclick="mcduKey('0')">0</button><button onclick="mcduKey('.')">.</button><button onclick="mcduKey('+/−')">+/−</button>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="flight-deck-controls">
+        <div class="control-card"><div class="control-title">SIDESTICK · CAPT</div>
+          <div class="stick-area" id="stick-area"><div class="stick-cross"></div><div class="stick-handle" id="stick-handle"></div></div>
+          <div class="control-readout"><span>PITCH</span><b id="pitch-readout">0°</b></div><div class="control-readout"><span>ROLL</span><b id="roll-readout">0°</b></div>
+          <button class="control-btn" onclick="centerStick()">CENTER STICK</button><div class="cockpit-hint">Touch-drag to control pitch and roll</div>
+        </div>
+        <div class="control-card"><div class="control-title">THRUST LEVERS</div><div class="thrust-row">
+          <div class="thrust-control"><div class="snm">ENG 1</div><div class="thrust-value" id="thrust1-value">IDLE · 0%</div><input id="thrust1" type="range" min="0" max="100" value="0" oninput="setThrust(0,this.value)"></div>
+          <div class="thrust-control"><div class="snm">ENG 2</div><div class="thrust-value" id="thrust2-value">IDLE · 0%</div><input id="thrust2" type="range" min="0" max="100" value="0" oninput="setThrust(1,this.value)"></div></div>
+          <button class="control-btn" onclick="setBothThrust(0)">IDLE</button><button class="control-btn" onclick="setBothThrust(50)">CLB</button><button class="control-btn" onclick="setBothThrust(100)">TOGA</button>
+          <div class="control-readout"><span>SIM IAS</span><b id="sim-speed">0 KT</b></div><div class="control-readout"><span>SIM ALT</span><b id="sim-alt">0 FT</b></div><div class="control-readout"><span>SIM HDG</span><b id="sim-hdg">270°</b></div>
+        </div>
+        <div class="control-card"><div class="control-title">ECAM SYSTEM PAGES</div><div class="ecam-pages">
+          <button id="ecam-page-eng" class="active" onclick="setEcamPage('ENG')">ENG</button><button id="ecam-page-elec" onclick="setEcamPage('ELEC')">ELEC</button><button id="ecam-page-hyd" onclick="setEcamPage('HYD')">HYD</button><button id="ecam-page-fuel" onclick="setEcamPage('FUEL')">FUEL</button><button id="ecam-page-doors" onclick="setEcamPage('DOOR')">DOOR</button></div>
+          <div id="cockpit-ecam-page" class="system-status">ENG 1: OFF
+ENG 2: OFF</div>
+          <button class="control-btn" onclick="toggleGear()">GEAR <span id="gear-label">DOWN</span></button><button class="control-btn" onclick="cycleFlaps()">FLAPS <span id="flap-label">0</span></button>
+          <div class="cockpit-hint">Simplified training model, not certified flight dynamics</div>
         </div>
       </div>
       <div class="cockpit-hint">2D COCKPIT PANEL · USE THE TOP BUTTONS TO SWITCH BETWEEN MAIN PANEL AND OVERHEAD SWITCHES</div>
@@ -834,6 +854,9 @@ function mcduKey(key){
   screen.innerHTML="A320 FLIGHT MANAGEMENT<br>----------------------<br>"+(mcduLine||"INIT A    INIT B<br>F-PLN    RAD NAV");
 }
 function updateMainDisplays(){
+  updateFlightControls();
+  renderMCDU();
+  renderCockpitEcam();
   const ids=["main-eng1","main-eng2"];
   for(let i=0;i<2;i++){
     const state=S.engState[i];
@@ -859,6 +882,72 @@ function updateMainDisplays(){
   }
 }
 
+
+/* Interactive cockpit trainer extensions */
+S.thrust=[0,0];S.pitch=0;S.roll=0;S.simSpeed=0;S.simAlt=0;S.simHeading=270;S.gearDown=true;S.flaps=0;
+let activeEcamPage="ENG",activeMcduPage="MCDU MENU",mcduScratchpad="";
+function setThrust(i,v){S.thrust[i]=Number(v);const e=document.getElementById("thrust"+(i+1)+"-value");if(e)e.textContent=(v==0?"IDLE":v>=95?"TOGA":v>=45?"CLB":"THR")+" · "+v+"%";updateFlightControls();}
+function setBothThrust(v){for(let i=0;i<2;i++){document.getElementById("thrust"+(i+1)).value=v;setThrust(i,v);}}
+function centerStick(){S.pitch=0;S.roll=0;updateFlightControls();}
+function toggleGear(){S.gearDown=!S.gearDown;updateFlightControls();renderCockpitEcam();}
+function cycleFlaps(){S.flaps=(S.flaps+1)%5;updateFlightControls();renderCockpitEcam();}
+function updateFlightControls(){
+ const h=document.getElementById("stick-handle");if(h){h.style.left=(50+S.roll*.42)+"%";h.style.top=(50+S.pitch*.42)+"%";}
+ const put=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+ put("pitch-readout",Math.round(S.pitch)+"°");put("roll-readout",Math.round(S.roll)+"°");
+ put("sim-speed",Math.round(S.simSpeed)+" KT");put("sim-alt",Math.round(S.simAlt)+" FT");put("sim-hdg",String(Math.round(S.simHeading+360)%360).padStart(3,"0")+"°");
+ put("pfd-speed",String(Math.round(S.simSpeed)).padStart(3,"0"));put("pfd-alt",String(Math.max(0,Math.round(S.simAlt))).padStart(5,"0"));
+ put("gear-label",S.gearDown?"DOWN":"UP");put("flap-label",S.flaps);
+}
+function initStick(){
+ const a=document.getElementById("stick-area");if(!a)return;let active=false;
+ const move=e=>{if(!active)return;const r=a.getBoundingClientRect();S.roll=Math.max(-100,Math.min(100,(e.clientX-r.left-r.width/2)/(r.width/2)*100));S.pitch=Math.max(-100,Math.min(100,(e.clientY-r.top-r.height/2)/(r.height/2)*100));updateFlightControls();};
+ a.addEventListener("pointerdown",e=>{active=true;a.setPointerCapture(e.pointerId);move(e);});a.addEventListener("pointermove",move);
+ const stop=()=>{active=false;};a.addEventListener("pointerup",stop);a.addEventListener("pointercancel",stop);
+}
+function flightTick(){
+ const dt=.1,avg=(S.thrust[0]+S.thrust[1])/2,engines=S.engState.filter(v=>v===2).length;
+ S.simSpeed=Math.max(0,Math.min(340,S.simSpeed+(engines?((avg/100)*7-1.2): -2)*dt));
+ S.simHeading=(S.simHeading+S.roll*.035*dt+360)%360;
+ const lift=S.simSpeed>80?(S.simSpeed-80)/260:0;
+ S.simAlt=Math.max(0,Math.min(39000,S.simAlt+(S.pitch/100*180+lift*80-10)*dt));
+ updateFlightControls();
+}
+function setEcamPage(page){activeEcamPage=page;document.querySelectorAll(".ecam-pages button").forEach(b=>b.classList.toggle("active",b.id==="ecam-page-"+({ENG:"eng",ELEC:"elec",HYD:"hyd",FUEL:"fuel",DOOR:"doors"}[page])));renderCockpitEcam();}
+function renderCockpitEcam(){
+ const e=document.getElementById("cockpit-ecam-page");if(!e)return;
+ const eng=i=>"ENG "+(i+1)+" "+(S.engState[i]===2?"IDLE":S.engState[i]===1?"STARTING":"OFF")+" · N1 "+S.engN1[i].toFixed(1)+"% · N2 "+S.engN2[i].toFixed(1)+"% · EGT "+Math.round(S.engEGT[i])+"°C";
+ const pages={
+ ENG:eng(0)+"\n"+eng(1)+"\nTHRUST "+Math.round((S.thrust[0]+S.thrust[1])/2)+"%",
+ ELEC:"BAT 1 "+(S.bat[0]?"ON · 26.5V":"OFF")+"\nBAT 2 "+(S.bat[1]?"ON · 26.5V":"OFF")+"\nAPU GEN "+(S.apuAvail?"AVAILABLE":"OFF")+"\nENG GEN 1 "+(S.engState[0]===2?"ON":"OFF")+"\nENG GEN 2 "+(S.engState[1]===2?"ON":"OFF"),
+ HYD:"BLUE ELEC PUMP "+(S.hyd[0]?"ON":"OFF")+"\nGREEN ELEC PUMP "+(S.hyd[1]?"ON":"OFF")+"\nYELLOW ELEC PUMP "+(S.hyd[2]?"ON":"OFF")+"\nPRESSURE "+(S.hyd.some(Boolean)?"SIMULATED":"LOW"),
+ FUEL:"LEFT PUMPS "+(S.fuel[0]||S.fuel[3]?"ON":"OFF")+"\nCENTER PUMPS "+(S.fuel[1]||S.fuel[4]?"ON":"OFF")+"\nRIGHT PUMPS "+(S.fuel[2]||S.fuel[5]?"ON":"OFF"),
+ DOOR:"GEAR "+(S.gearDown?"DOWN":"UP")+"\nFLAPS "+S.flaps+"\nCABIN DOORS CLOSED (SIM)\nPARKING BRAKE SET (SIM)"
+ };
+ e.textContent=pages[activeEcamPage]||pages.ENG;
+}
+function mcduKey(key){
+ if(["DIR","PROG","PERF","INIT","DATA","F-PLN","RAD","FUEL","SEC","ATC","MENU"].includes(key)){activeMcduPage=key==="DIR"?"DIR TO":key==="F-PLN"?"F-PLN":key==="INIT"?"INIT A":key==="PERF"?"PERF":key==="PROG"?"PROGRESS":key==="RAD"?"RAD NAV":key==="FUEL"?"FUEL PRED":key==="SEC"?"SEC F-PLN":key==="ATC"?"ATC COMM":key==="DATA"?"A/C STATUS":"MCDU MENU";renderMCDU();return;}
+ if(key==="CLR")mcduScratchpad="";else mcduScratchpad=(mcduScratchpad+key).slice(-22);renderMCDU();
+}
+function renderMCDU(){
+ const e=document.getElementById("mcdu-screen");if(!e)return;
+ const powered=S.bat.some(v=>v)||S.apuAvail;let lines;
+ if(!powered)lines=["MCDU 1","----------------","NO ELECTRICAL POWER","BAT 1/2 OR APU GEN"];
+ else if(activeMcduPage==="INIT A")lines=["INIT A","FROM/TO   ALTN","VIE/NAP","IRS "+(S.adirs.every(v=>v===1)?"ALIGNED":"NOT ALIGNED"),"COST INDEX 20","CRZ FL 360"];
+ else if(activeMcduPage==="F-PLN")lines=["F-PLN","VIE","DIRECT TO NAP","NAP","----------------","SIM ROUTE: VIE DCT NAP"];
+ else if(activeMcduPage==="PERF")lines=["PERF TAKE OFF","V1 135   VR 138","V2 142","FLAPS/THS 1 / UP0","FLEX TEMP 45","SIMULATED DATA"];
+ else if(activeMcduPage==="PROGRESS"||activeMcduPage==="PROG")lines=["PROGRESS","FROM VIE TO NAP","DIST REM 430 NM","GS "+Math.round(S.simSpeed)+" KT","ALT "+Math.round(S.simAlt)+" FT"];
+ else if(activeMcduPage==="RAD NAV")lines=["RAD NAV","ILS FREQ 109.50","COURSE 270","VOR 1 ----"];
+ else if(activeMcduPage==="FUEL PRED")lines=["FUEL PRED","PUMPS "+(S.fuel.some(Boolean)?"ON":"CHECK"),"DEST NAP","EFOB --.-"];
+ else if(activeMcduPage==="DIR TO")lines=["DIR TO","SELECT WAYPOINT","NAP","INSERT*"];
+ else if(activeMcduPage==="A/C STATUS")lines=["A/C STATUS","IRS "+(S.adirs.every(v=>v===1)?"NAV":"ALIGN/OFF"),"APU "+(S.apuAvail?"AVAIL":"OFF"),"ENG1 "+(S.engState[0]===2?"IDLE":"NOT RUNNING"),"ENG2 "+(S.engState[1]===2?"IDLE":"NOT RUNNING")];
+ else if(activeMcduPage==="SEC F-PLN")lines=["SEC F-PLN","NO SECONDARY ROUTE","SIMULATION"];
+ else if(activeMcduPage==="ATC COMM")lines=["ATC COMM","STBY","NO ATC LINK"];
+ else lines=["MCDU MENU","INIT A / INIT B","F-PLN / RAD NAV","PERF / PROG","DATA / FUEL","SCRATCHPAD"];
+ e.textContent=lines.join("\n")+"\n----------------\n"+(mcduScratchpad||"                    ");
+}
+
 function startSim(){
   try{ga()}catch(e){}
   document.getElementById('intro').classList.add('out');
@@ -866,6 +955,8 @@ function startSim(){
     document.getElementById('intro').style.display='none';
     document.getElementById('app').classList.add('visible');
     setInterval(tick,300);
+    setInterval(flightTick,100);
+    initStick();
     rend();
   },800);
 }
