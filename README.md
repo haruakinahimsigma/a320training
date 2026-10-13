@@ -1,15 +1,11 @@
 # A320 Startup Simulator (2D)
 
-A browser-based, touch-friendly A320-214 cold-and-dark startup training prototype. The project intentionally uses a **2D instrument-panel interface**—no Three.js, no 3D cockpit, and no model downloads.
+A touch-friendly browser prototype for exploring an A320-style cockpit workflow. The interface has two switchable views:
 
-## Features
+- **Cockpit** — a 2D forward instrument panel with stylized PFD/ND/ECAM displays, an FCU strip, center pedestal, and a small MCDU mock-up.
+- **Overhead** — the startup simulator's interactive overhead switches, APU and engine-start controls, ECAM-style readouts, and checklist.
 
-- Cold-and-dark intro screen and cockpit status bar
-- Interactive battery, APU, fuel-pump, hydraulic-pump, ADIRS, beacon, and engine-start controls
-- Simplified ECAM-style electrical, APU, and engine readouts
-- Startup checklist with current-step highlighting
-- Simulated APU/engine spool-up timing and switch sounds
-- Responsive layout intended for desktop and iPad browsers
+Use the **COCKPIT** and **OVERHEAD** buttons in the top bar to move between the two views. Both views share the same simulated aircraft state, so battery/APU/engine actions in the overhead are reflected in the cockpit's engine indications.
 
 ## Run it
 
@@ -22,4 +18,4 @@ Open `index.html` in a browser, or publish the repository with GitHub Pages:
 
 ## Important limitations
 
-This is an educational interface prototype, **not** a real or certified Airbus simulator. The system logic, indications, timings, and startup procedure are simplified and should not be used as real-world operating guidance. Several controls are visual/demo controls only.
+This is an educational UI prototype, **not** a real or certified Airbus simulator. The cockpit screens, flight values, and system logic are simplified; some cockpit controls are mock-ups, and the startup procedure should not be used as real-world operating guidance.
