@@ -1,95 +1,689 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#10151b">
-<title>A320 Training — Cockpit Lab</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A320 Cockpit Simulator</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:dark;--bg:#0a0e13;--panel:#171e26;--line:#36424c;--cyan:#69d9e7;--green:#79e2a1;--amber:#ffbf5b;--red:#ff6c68}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#eaf0f5;touch-action:manipulation}button{font:inherit;color:inherit;cursor:pointer}#app{position:relative;width:100%;height:100%;overflow:hidden;background:radial-gradient(ellipse at 50% 22%,#344450 0,#18242d 40%,#080c11 100%)}#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
-#hud{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:env(safe-area-inset-top) 10px env(safe-area-inset-bottom)}
-.topbar{pointer-events:auto;display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 10px;background:#0b1119d9;border:1px solid #ffffff1c;border-radius:12px;backdrop-filter:blur(12px);max-width:780px;width:100%;margin:6px auto 0}.brand{font-weight:800;letter-spacing:.08em;font-size:12px}.brand span{color:var(--cyan)}.status{font-size:10px;color:#a8b7c4;margin-top:2px}.top-actions{display:flex;gap:6px}.ui-btn{border:1px solid #42505c;background:#202a34;border-radius:8px;padding:8px 10px;font-size:11px;min-height:36px}.ui-btn:active{transform:scale(.97)}.ui-btn.primary{background:#16424b;border-color:#397986;color:#b8f7ff}
-#viewLabel{position:absolute;top:78px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.16em;color:#d9e6edb8;text-shadow:0 2px 5px #000;white-space:nowrap;pointer-events:none}
-.bottom{pointer-events:auto;width:100%;max-width:780px;margin:0 auto 7px;display:grid;grid-template-columns:1fr;gap:7px}.readouts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}.pill{background:#0b1119d9;border:1px solid #ffffff1a;border-radius:8px;padding:6px 9px;font-size:10px;color:#b7c6d2}.pill b{color:var(--green);font-weight:700}.dock{display:flex;gap:6px;padding:6px;background:#0b1119e8;border:1px solid #ffffff24;border-radius:12px;backdrop-filter:blur(12px);justify-content:center}.dock button{flex:1;max-width:150px;background:#1b242e;border:1px solid #3b4854;border-radius:8px;padding:10px 4px;font-size:11px;min-height:42px}.dock button.active{background:#17414a;border-color:#52a4b2;color:#bdf8ff}
-#drawer{pointer-events:auto;position:absolute;right:10px;top:78px;bottom:112px;width:min(320px,calc(100vw - 20px));overflow:auto;background:#0b1119f2;border:1px solid #3d4a56;border-radius:12px;padding:12px;backdrop-filter:blur(14px);display:none;box-shadow:0 10px 40px #0008}#drawer.open{display:block}.drawer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.drawer-head h2{font-size:14px;margin:0;letter-spacing:.08em}.close{background:transparent;border:0;font-size:22px;color:#9cabb7;padding:0 4px}.section{border-top:1px solid #2c3741;padding:10px 0}.section h3{margin:0 0 8px;font-size:10px;color:#9aadb9;letter-spacing:.14em}.control-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;background:#17212a;border:1px solid #34424d;border-radius:8px;padding:9px;font-size:11px;min-height:42px}.toggle i{width:24px;height:14px;border-radius:10px;background:#47515a;position:relative;flex-shrink:0}.toggle i:after{content:"";position:absolute;width:10px;height:10px;top:2px;left:2px;background:#b7c0c6;border-radius:50%;transition:.15s}.toggle.on{border-color:#347c66}.toggle.on i{background:#327d60}.toggle.on i:after{left:12px;background:#e5fff1}.tiny{font-size:10px;color:#92a3af;line-height:1.5}.checklist{display:grid;gap:6px}.step{display:flex;gap:8px;align-items:flex-start;font-size:11px;line-height:1.4}.dot{width:8px;height:8px;border-radius:50%;background:#43515d;margin-top:4px;flex-shrink:0}.dot.done{background:var(--green);box-shadow:0 0 8px #79e2a177}.notice{font-size:11px;color:#d2e1e8;background:#14212b;border:1px solid #2b4654;border-radius:8px;padding:9px;line-height:1.45}
-@media(max-width:520px){.brand{font-size:10px}.ui-btn{padding:7px 8px;font-size:10px}.topbar{padding:7px}.pill{font-size:9px;padding:5px 7px}.dock button{font-size:10px;padding:8px 2px;min-height:40px}.bottom{margin-bottom:4px}#viewLabel{top:70px}#drawer{top:70px;bottom:106px}}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --amber:#ffa000;
+  --amber-dim:#7a4c00;
+  --green:#00c87a;
+  --red:#e03030;
+  --blue:#3399ff;
+  --panel:#0b0b16;
+  --panel2:#0f0f1e;
+  --panel3:#13131f;
+  --border:#1e1e2e;
+  --border2:#2a2a3e;
+  --text:#ccd;
+  --text-dim:#55556a;
+  --mono:'Share Tech Mono',monospace;
+  --head:'Rajdhani',sans-serif;
+}
+html,body{height:100%;overflow:hidden;background:#04040c}
+body{display:flex;flex-direction:column;font-family:var(--head)}
+
+/* ── INTRO SCREEN ── */
+#intro{
+  position:fixed;inset:0;background:#04040c;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
+  z-index:100;transition:opacity .8s ease,transform .8s ease;
+}
+#intro.out{opacity:0;pointer-events:none;transform:scale(1.04)}
+.intro-badge{font-family:var(--mono);font-size:11px;letter-spacing:4px;color:var(--amber-dim);margin-bottom:28px;text-transform:uppercase}
+.intro-logo{font-family:var(--head);font-size:72px;font-weight:700;letter-spacing:12px;color:#fff;line-height:1;text-transform:uppercase;text-shadow:0 0 80px rgba(255,160,0,.15)}
+.intro-sub{font-family:var(--head);font-size:18px;font-weight:300;letter-spacing:8px;color:var(--amber);margin-top:8px;text-transform:uppercase}
+.intro-sep{width:320px;height:1px;background:linear-gradient(to right,transparent,var(--amber-dim),transparent);margin:32px 0}
+.intro-info{display:flex;gap:40px;margin-bottom:40px}
+.intro-stat{text-align:center}
+.intro-stat span{display:block;font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:2px;margin-bottom:4px;text-transform:uppercase}
+.intro-stat b{font-size:15px;font-weight:400;color:var(--text);letter-spacing:1px}
+.intro-btn{
+  font-family:var(--mono);font-size:13px;letter-spacing:4px;text-transform:uppercase;
+  padding:14px 48px;background:transparent;color:var(--amber);
+  border:1px solid var(--amber-dim);cursor:pointer;
+  transition:all .25s;position:relative;overflow:hidden;
+}
+.intro-btn::before{content:'';position:absolute;inset:0;background:var(--amber);opacity:0;transition:opacity .25s}
+.intro-btn:hover{border-color:var(--amber);color:#000}
+.intro-btn:hover::before{opacity:1}
+.intro-btn span{position:relative}
+.intro-crt{position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0px,rgba(0,0,0,.03) 1px,transparent 1px,transparent 2px);z-index:200}
+
+/* ── MAIN LAYOUT ── */
+#app{height:100vh;display:none;flex-direction:column}
+#app.visible{display:flex}
+
+/* top bar */
+#topbar{
+  height:42px;background:var(--panel2);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 16px;gap:24px;flex-shrink:0;
+}
+.tb-reg{font-family:var(--mono);font-size:13px;color:var(--amber);letter-spacing:2px}
+.tb-sep{width:1px;height:20px;background:var(--border2)}
+.tb-info{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase}
+.tb-info b{color:var(--text);font-weight:400}
+.tb-right{margin-left:auto;display:flex;gap:16px;align-items:center}
+.pi-item{display:flex;align-items:center;gap:6px}
+.pi-dot{width:7px;height:7px;border-radius:50%;background:#1a1a2a;transition:background .3s,box-shadow .3s}
+.pi-dot.on{background:var(--green);box-shadow:0 0 8px rgba(0,200,122,.4)}
+.pi-dot.warn{background:var(--amber);box-shadow:0 0 8px rgba(255,160,0,.4)}
+.pi-lbl{font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase}
+#clock{font-family:var(--mono);font-size:12px;color:var(--amber);letter-spacing:2px}
+.phase-tag{font-family:var(--mono);font-size:10px;letter-spacing:2px;padding:3px 10px;background:rgba(255,160,0,.08);border:1px solid var(--amber-dim);color:var(--amber);border-radius:1px;text-transform:uppercase}
+
+/* content area */
+#content{flex:1;display:flex;min-height:0}
+
+/* overhead panel */
+#overhead{
+  flex:1;overflow-y:auto;padding:12px;background:var(--panel);
+  display:flex;flex-direction:column;gap:8px;
+  scrollbar-width:thin;scrollbar-color:var(--border) var(--panel);
+}
+#overhead::-webkit-scrollbar{width:4px}
+#overhead::-webkit-scrollbar-thumb{background:var(--border2)}
+
+/* right panel */
+#right{
+  width:300px;flex-shrink:0;display:flex;flex-direction:column;
+  background:#060610;border-left:1px solid var(--border);
+}
+
+/* ── SECTION ── */
+.sec{
+  background:var(--panel2);border:1px solid var(--border);border-radius:2px;padding:10px;
+}
+.sec-t{
+  font-family:var(--head);font-size:10px;font-weight:600;letter-spacing:3px;
+  color:var(--text-dim);text-transform:uppercase;margin-bottom:9px;
+  padding-bottom:5px;border-bottom:1px solid var(--border);
+}
+.srow{display:flex;gap:6px;align-items:flex-end;flex-wrap:wrap}
+.swrap{display:flex;flex-direction:column;align-items:center;gap:3px}
+.snm{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-align:center;text-transform:uppercase;letter-spacing:.3px;line-height:1.2}
+
+/* ── PUSHBUTTON ── */
+.pb{
+  width:60px;height:60px;background:#0d0d1c;
+  border:1px solid #1c1c2e;border-radius:2px;
+  cursor:pointer;display:flex;flex-direction:column;
+  transition:transform .08s,border-color .15s;user-select:none;
+  position:relative;overflow:hidden;
+}
+.pb::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .1s}
+.pb:hover{border-color:var(--border2)}
+.pb:hover::after{background:rgba(255,255,255,.03)}
+.pb:active{transform:scale(.95)}
+.pb[data-sw="dim"]{opacity:.2;pointer-events:none}
+.sw-led{
+  height:18px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:9px;letter-spacing:.5px;
+  border-bottom:1px solid #0d0d1e;border-radius:2px 2px 0 0;
+  transition:background .2s,color .2s;
+}
+.sw-lbl{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:10px;color:#888;
+  letter-spacing:.3px;text-align:center;padding:2px;line-height:1.3;text-transform:uppercase;
+}
+.pb[data-sw="off"] .sw-led{background:rgba(255,255,255,.04);color:#666}
+.pb[data-sw="off"] .sw-led::after{content:"OFF"}
+.pb[data-sw="on"] .sw-led{background:transparent;color:transparent}
+.pb[data-sw="avail"] .sw-led{background:rgba(0,200,122,.12);color:var(--green)}
+.pb[data-sw="avail"] .sw-led::after{content:"AVAIL";font-size:8px}
+.pb[data-sw="fault"] .sw-led{background:rgba(255,160,0,.12);color:var(--amber)}
+.pb[data-sw="fault"] .sw-led::after{content:"FAULT"}
+
+/* guard */
+.gwrap{position:relative;width:60px}
+.gd{
+  position:absolute;inset:0;background:#7a1515;
+  border:1px solid #c02020;border-radius:2px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.5);
+  letter-spacing:1px;z-index:2;
+  transition:opacity .4s,transform .4s;transform-origin:top center;text-transform:uppercase;
+}
+.gd.lifted{opacity:0;transform:rotateX(90deg) translateY(-40px);pointer-events:none}
+
+/* rotary */
+.rot{
+  width:56px;height:56px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#222236,#0e0e1c);
+  border:2px solid #1e1e32;position:relative;cursor:pointer;user-select:none;
+  transition:border-color .2s;
+}
+.rot:hover{border-color:var(--border2)}
+.rot-ln{
+  position:absolute;width:2px;height:18px;background:#bbb;
+  border-radius:1px;top:7px;left:calc(50% - 1px);
+  transform-origin:bottom center;transition:transform .2s cubic-bezier(.4,0,.2,1);
+}
+.rot-lbl{font-family:var(--mono);font-size:11px;color:var(--blue);letter-spacing:.5px;margin-top:2px}
+
+/* toggle */
+.tog{
+  width:30px;height:62px;background:#0d0d1c;
+  border:1px solid #1c1c2e;border-radius:2px;
+  position:relative;cursor:pointer;user-select:none;
+}
+.tog-lv{
+  width:24px;height:22px;background:#38384e;
+  border-radius:2px;position:absolute;left:3px;
+  transition:top .12s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 2px 6px rgba(0,0,0,.5);
+}
+.tog-lv.up{top:3px} .tog-lv.dn{top:37px}
+.tog-on .tog-lv{background:#2a5a3a}
+
+/* vsep */
+.vsep{width:1px;height:44px;background:var(--border);margin:0 4px;align-self:center}
+
+/* ── ECAM ── */
+#ecam{
+  flex:1;padding:10px;background:#020208;border-bottom:1px solid var(--border);
+  font-family:var(--mono);font-size:11px;overflow:hidden;
+}
+#ecam-title{
+  font-family:var(--head);font-size:11px;letter-spacing:4px;text-align:center;
+  color:var(--text-dim);border-bottom:1px solid var(--border);
+  padding-bottom:5px;margin-bottom:8px;text-transform:uppercase;font-weight:500;
+}
+#ecam-body{color:var(--text-dim)}
+.er{display:flex;justify-content:space-between;padding:1px 0}
+.eg{color:var(--green)} .ea{color:var(--amber)} .ew{color:var(--text)} .ed{color:#2a2a3a}
+.esep{border-top:1px solid #0e0e18;margin:4px 0}
+.ebar{height:5px;background:#0c0c18;border-radius:1px;margin:2px 0;border:1px solid #141420;overflow:hidden}
+.ebarfill{height:100%;border-radius:1px;transition:width .4s}
+.no-pwr{color:var(--text-dim);text-align:center;padding-top:24px;font-size:12px;letter-spacing:2px}
+
+/* ── CHECKLIST ── */
+#checklist{
+  flex:1;overflow-y:auto;padding:10px;
+  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+}
+#checklist::-webkit-scrollbar{width:3px}
+#checklist::-webkit-scrollbar-thumb{background:var(--border2)}
+.cl-head{font-family:var(--head);font-size:10px;font-weight:600;letter-spacing:3px;color:var(--text-dim);margin-bottom:8px;text-transform:uppercase}
+.cl-step{
+  display:flex;align-items:flex-start;gap:7px;padding:3px 5px;
+  margin-bottom:2px;border-radius:2px;
+  font-family:var(--mono);font-size:11px;
+  transition:background .2s;
+}
+.cl-ic{width:13px;flex-shrink:0;margin-top:.5px;font-size:11px;line-height:1}
+.cl-step.done{color:#1a4a1a}
+.cl-step.cur{background:rgba(0,120,255,.08);color:var(--text)}
+.cl-step.wait{color:var(--amber);animation:pulse 1.4s ease-in-out infinite}
+.cl-step.pend{color:#252535}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.cl-complete{
+  font-family:var(--mono);font-size:11px;color:var(--green);
+  padding:6px 5px;margin-top:4px;
+  border-top:1px solid #1a2a1a;
+}
+
+/* ── STATUS BAR ── */
+#statusbar{
+  padding:5px 10px;border-top:1px solid var(--border);
+  font-family:var(--mono);font-size:10px;color:var(--text-dim);
+  display:flex;justify-content:space-between;letter-spacing:1px;flex-shrink:0;
+}
 </style>
 </head>
 <body>
-<div id="app"><canvas id="scene"></canvas>
-<div id="hud">
-<header class="topbar"><div><div class="brand">A320 <span>TRAINING LAB</span></div><div class="status" id="subStatus">COCKPIT SYSTEMS · INTERACTIVE DEMO</div></div><div class="top-actions"><button class="ui-btn" id="viewBtn">VIEW: CAPT</button><button class="ui-btn primary" id="systemsBtn">SYSTEMS</button></div></header>
-<div id="viewLabel">CAPTAIN'S FLIGHT DECK · TOUCH TO INTERACT</div>
-<aside id="drawer"><div class="drawer-head"><h2 id="drawerTitle">AIRCRAFT SYSTEMS</h2><button class="close" id="closeDrawer" aria-label="Close">×</button></div><div id="drawerContent"></div></aside>
-<div class="bottom"><div class="readouts"><div class="pill">BAT <b id="batRead">OFF</b></div><div class="pill">APU <b id="apuRead">OFF</b></div><div class="pill">ENG 1 <b id="eng1Read">OFF</b></div><div class="pill">ENG 2 <b id="eng2Read">OFF</b></div><div class="pill">PARK BRK <b id="brakeRead">SET</b></div></div><nav class="dock"><button class="active" data-panel="overhead">OVERHEAD</button><button data-panel="main">MAIN PANEL</button><button data-panel="pedestal">PEDESTAL</button><button data-panel="checklist">START FLOW</button></nav></div>
-</div></div>
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-const canvas=document.querySelector('#scene'), app=document.querySelector('#app');
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
-const scene=new THREE.Scene();scene.background=new THREE.Color('#344650');scene.fog=new THREE.Fog('#344650',16,40);
-const camera=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,.1,100);camera.position.set(0,2.15,7.7);
-scene.add(new THREE.HemisphereLight(0xbdd9e9,0x171c21,2.0));const key=new THREE.DirectionalLight(0xe2f0ff,2.3);key.position.set(-4,8,6);scene.add(key);
-const mat=(color,rough=.7,metal=0)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
-const shell=mat('#252d33'),edge=mat('#11171b'),panel=mat('#303a41'),panel2=mat('#202930'),screen=mat('#06130f',.4),glass= new THREE.MeshStandardMaterial({color:'#a8d0d8',roughness:.18,metalness:.05,transparent:true,opacity:.12,side:THREE.DoubleSide});
-const green=mat('#62df9b',.35),amber=mat('#ffbd52',.35),white=mat('#d6e5e8',.5),blue=mat('#3e9cac',.35),red=mat('#df5656',.35);
-function cube(parent,x,y,z,w,h,d,material,r=.06){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);m.position.set(x,y,z);if(r){m.geometry.computeVertexNormals()}parent.add(m);return m}
-function sphere(parent,x,y,z,s,material){const m=new THREE.Mesh(new THREE.SphereGeometry(s,12,8),material);m.position.set(x,y,z);parent.add(m);return m}
-function textSprite(str,color='#b8f7d3',size=40){const c=document.createElement('canvas');c.width=512;c.height=128;const ctx=c.getContext('2d');ctx.clearRect(0,0,512,128);ctx.font='bold '+size+'px monospace';ctx.fillStyle=color;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(str,256,64);const tex=new THREE.CanvasTexture(c);const m=new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false});const mesh=new THREE.Mesh(new THREE.PlaneGeometry(1.5,.38),m);return mesh}
-const interactables=[];const state={bat1:false,bat2:false,extPwr:false,apuMaster:false,apuStart:false,apuAvail:false,apuBleed:false,fuel1:false,fuel2:false,ign:false,eng1:false,eng2:false,park:true,nav:false,beacon:false,seatbelt:false,noSmoking:false,ir1:false,ir2:false,ir3:false,lights:false,view:'capt',panel:'main'};
-const root=new THREE.Group();scene.add(root);
-// Flight deck shell and windshield frame
-cube(root,0,1.6,-1.9,8,.35,3.4,shell);cube(root,0,3.65,-2.1,8,.35,3.2,shell);cube(root,-3.85,2.65,-2.1,.3,2,3.2,shell);cube(root,3.85,2.65,-2.1,.3,2,3.2,shell);
-for(let i=-2;i<=2;i++){const x=i*1.28;cube(root,x,3.0,-2.2,.075,1.25,.12,edge)}
-cube(root,0,2.42,-2.25,7.4,.11,.18,edge);
-const win=cube(root,0,2.9,-2.27,7.35,1.2,.025,glass,0);win.material.side=THREE.DoubleSide;
-// outside apron and horizon
-const ground=cube(root,0,-.8,-17,100,.15,35,mat('#626e68'));const horizon=cube(root,0,1.15,-19,100,3,.2,mat('#718b98'));cube(root,0,2.6,-25,100,3,.2,mat('#a6b8bb'));
-for(let i=-5;i<=5;i++){cube(root,i*1.4,-.7,-10,.035,.02,8,mat('#c6c8b8'))}
-// Main glare shield and instrument panel
-cube(root,0,1.72,.15,7.6,.42,1.0,shell);cube(root,0,1.38,.15,7.35,.28,.82,edge);
-function makeScreen(x,y,z,w,h,label,kind){cube(root,x,y,z,w+.13,h+.13,.15,edge);cube(root,x,y,z-.09,w,h,.025,screen,0);const txt=textSprite(label,kind==='pfd'?'#80e7ca':'#b3d4df',28);txt.position.set(x,y,z-.11);txt.scale.set(w*.9,h*.24,1);root.add(txt);const g=new THREE.Group();g.position.set(x,y,z-.13);root.add(g);if(kind==='pfd'){const horizonLine=cube(g,0,0,0,w*.86,.018,.012,blue,0);horizonLine.position.y=-h*.03;const arc=cube(g,0,-h*.16,0,w*.52,.018,.012,amber,0);arc.rotation.z=.12;for(let i=-2;i<=2;i++)cube(g,i*w*.12,-h*.34,0,.012,.09,.012,green,0)}else if(kind==='nd'){for(let i=0;i<3;i++){const ln=cube(g,0,h*(.2-i*.18),0,w*.8,.012,.012,blue,0);ln.rotation.z=i*.15-.15}sphere(g,0,0,0,.035,green)}return {g,x,y,z,w,h,label,kind}}
-const displays=[makeScreen(-2.45,1.45,-.36,1.55,.96,'PFD  ·  101','pfd'),makeScreen(-.72,1.45,-.36,1.55,.96,'ND  ·  PLAN','nd'),makeScreen(.95,1.45,-.36,1.55,.96,'E/WD  ·  NORM','ecam'),makeScreen(2.65,1.45,-.36,1.55,.96,'SD  ·  DOOR','ecam')];
-// Knobs and FCU
-cube(root,0,2.05,-.13,3.8,.22,.5,panel);function knob(x,y,z,caption){const base=cube(root,x,y,z,.22,.18,.2,edge);const k=cube(root,x,y+.13,z,.13,.12,.13,white);const t=textSprite(caption,'#c8d7dc',18);t.position.set(x,y+.28,z-.05);t.scale.set(.65,.16,1);root.add(t);register(base,caption,()=>{k.rotation.y+=.5});register(k,caption,()=>{k.rotation.y+=.5})}
-knob(-1.35,2.05,-.45,'SPD');knob(-.45,2.05,-.45,'HDG');knob(.45,2.05,-.45,'ALT');knob(1.35,2.05,-.45,'V/S');
-// Pedestal
-cube(root,0,.65,1.15,2.65,.28,3.2,shell);cube(root,0,.82,.65,2.5,.12,1.35,panel);cube(root,0,.8,1.8,2.5,.12,1.25,panel2);cube(root,0,.78,2.7,2.5,.14,.55,edge);
-for(let i=0;i<10;i++){const x=-1.05+(i%5)*.52,z=.45+Math.floor(i/5)*.38;const b=cube(root,x,.92,z,.28,.08,.19,edge);register(b,'MCDU key',()=>{b.material=green})}
-const throttleBase=cube(root,0,1.02,2.0,.75,.18,.9,edge);const throttle=cube(root,0,1.25,1.9,.24,.42,.25,amber);let thrust=0;
-const thrLabel=textSprite('THRUST',' #f5c56c'.trim(),20);thrLabel.position.set(0,1.18,2.47);thrLabel.scale.set(.8,.18,1);root.add(thrLabel);
-const sidestick=cube(root,-2.85,.75,1.25,.2,.6,.2,edge);cube(root,-2.85,1.1,1.25,.36,.18,.3,red);cube(root,2.85,.75,1.25,.2,.6,.2,edge);
-// Overhead panel above view, shown as a clickable physical panel in scene
-const overhead=new THREE.Group();overhead.position.set(0,3.85,.1);root.add(overhead);cube(overhead,0,0,0,4.8,.18,2.2,panel2);cube(overhead,0,-.11,0,4.55,.04,2.0,edge);
-const overheadItems=[];
-function register(mesh,label,fn){mesh.userData.action=fn;mesh.userData.label=label;interactables.push(mesh)}
-function switch3d(x,z,label,keyName){cube(overhead,x,-.06,z,.58,.04,.56,panel);const knob=sphere(overhead,x,-.16,z,.105,state[keyName]?green:white);const labelSprite=textSprite(label,'#c5d1d7',15);labelSprite.position.set(x,-.1,z+.32);labelSprite.scale.set(.55,.13,1);overhead.add(labelSprite);const hit=cube(overhead,x,-.02,z,.52,.18,.5,mat('#000000',1),0);hit.material.transparent=true;hit.material.opacity=0;register(hit,label,()=>{state[keyName]=!state[keyName];knob.material=state[keyName]?green:white;refresh()});overheadItems.push({keyName,knob})}
-[['BAT 1','bat1'],['BAT 2','bat2'],['EXT PWR','extPwr'],['APU MASTER','apuMaster'],['APU START','apuStart'],['APU BLEED','apuBleed'],['FUEL 1','fuel1'],['FUEL 2','fuel2'],['IGNITION','ign'],['BEACON','beacon'],['NAV','nav'],['IR 1','ir1'],['IR 2','ir2'],['IR 3','ir3'],['SEAT BELT','seatbelt'],['NO SMOKING','noSmoking']].forEach((a,i)=>switch3d(-1.75+(i%4)*1.17,-.67+Math.floor(i/4)*.62,a[0],a[1]));
-// clickable main panel regions
-for(const d of displays){const hit=cube(root,d.x,d.y,d.z-.2,d.w,d.h,.08,mat('#000000'),0);hit.material.transparent=true;hit.material.opacity=0;register(hit,d.label,()=>{state.panel='main';openPanel('main')})}
-const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();let drag=null,lastX=0,lastY=0,orbit={yaw:0,pitch:0},viewMode='capt';
-function onPointerDown(e){drag={x:e.clientX,y:e.clientY,moved:false};lastX=e.clientX;lastY=e.clientY}
-function onPointerMove(e){if(!drag)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;if(Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y)>8)drag.moved=true;if(drag.moved){orbit.yaw=Math.max(-.42,Math.min(.42,orbit.yaw-dx*.003));orbit.pitch=Math.max(-.18,Math.min(.2,orbit.pitch+dy*.002));}lastX=e.clientX;lastY=e.clientY}
-function onPointerUp(e){if(!drag)return;const was=drag.moved;drag=null;if(was)return;const r=canvas.getBoundingClientRect();pointer.x=(e.clientX-r.left)/r.width*2-1;pointer.y=-((e.clientY-r.top)/r.height*2-1);raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(interactables,true);if(hits.length){let o=hits[0].object;while(o&&!o.userData.action)o=o.parent;if(o?.userData.action){o.userData.action();showToast(o.userData.label)}}}
-canvas.addEventListener('pointerdown',onPointerDown);canvas.addEventListener('pointermove',onPointerMove);canvas.addEventListener('pointerup',onPointerUp);canvas.addEventListener('pointercancel',()=>drag=null);
-function resize(){renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()}addEventListener('resize',resize);
-function setView(){const target=viewMode==='capt'?new THREE.Vector3(0,1.8,-.4):viewMode==='fo'?new THREE.Vector3(1.25,1.8,-.35):new THREE.Vector3(0,3.3,.2);camera.position.lerp(target.clone().add(new THREE.Vector3(0,.35,7.7)),.08);camera.lookAt(target);document.querySelector('#viewBtn').textContent='VIEW: '+viewMode.toUpperCase();document.querySelector('#viewLabel').textContent=(viewMode==='capt'?"CAPTAIN'S FLIGHT DECK":viewMode==='fo'?"FIRST OFFICER'S FLIGHT DECK":"OVERHEAD PANEL")+" · DRAG TO LOOK"}
-let toastTimer;function showToast(s){document.querySelector('#subStatus').textContent=s.toUpperCase()+' · STATE UPDATED';clearTimeout(toastTimer);toastTimer=setTimeout(()=>document.querySelector('#subStatus').textContent='COCKPIT SYSTEMS · INTERACTIVE DEMO',1700)}
-function isPowered(){return state.bat1||state.bat2||state.extPwr||state.apuAvail}
-function refresh(){document.querySelector('#batRead').textContent=state.bat1&&state.bat2?'ON':state.bat1||state.bat2?'PART':'OFF';document.querySelector('#apuRead').textContent=state.apuAvail?'AVAIL':state.apuStart?'START':state.apuMaster?'ON':'OFF';document.querySelector('#eng1Read').textContent=state.eng1?'RUN':state.fuel1?'READY':'OFF';document.querySelector('#eng2Read').textContent=state.eng2?'RUN':state.fuel2?'READY':'OFF';document.querySelector('#brakeRead').textContent=state.park?'SET':'OFF';displays[0].label=isPowered()?'PFD  ·  STBY':'PFD  ·  DARK';displays[1].label=isPowered()?'ND  ·  ARC':'ND  ·  DARK';displays[2].label=state.eng1||state.eng2?'ENG  ·  RUN':'E/WD  ·  NORM';}
-const drawer=document.querySelector('#drawer'),drawerContent=document.querySelector('#drawerContent');
-function openPanel(panelName){state.panel=panelName;drawer.classList.add('open');document.querySelectorAll('.dock button').forEach(b=>b.classList.toggle('active',b.dataset.panel===panelName));const titles={overhead:'OVERHEAD PANEL',main:'MAIN INSTRUMENT PANEL',pedestal:'CENTER PEDESTAL',checklist:'ENGINE START FLOW'};document.querySelector('#drawerTitle').textContent=titles[panelName]||'AIRCRAFT SYSTEMS';renderDrawer(panelName)}
-function renderDrawer(p){drawerContent.innerHTML='';if(p==='checklist'){drawerContent.innerHTML='<div class="notice">Training-only simplified flow. This is not a certified procedure or a real aircraft checklist.</div><div class="section"><h3>POWER-UP / START FLOW</h3><div id="steps" class="checklist"></div></div><button class="ui-btn primary" id="autoStep">NEXT TRAINING STEP</button><button class="ui-btn" id="resetFlow" style="margin-left:5px">RESET</button>';renderSteps();document.querySelector('#autoStep').onclick=nextStep;document.querySelector('#resetFlow').onclick=()=>{stepIndex=0;resetState();renderDrawer('checklist')};return}
-const groups=p==='overhead'?[['ELECTRICAL',['bat1','BAT 1','bat2','BAT 2','extPwr','EXT PWR']],['APU',['apuMaster','APU MASTER','apuStart','APU START','apuBleed','APU BLEED']],['ENGINE',['fuel1','ENG 1 FUEL','fuel2','ENG 2 FUEL','ign','IGNITION']],['OTHER',['beacon','BEACON','nav','NAV LIGHTS','seatbelt','SEAT BELT','noSmoking','NO SMOKING']],['INERTIAL REFERENCE',['ir1','IR 1','ir2','IR 2','ir3','IR 3']]]:p==='pedestal'?[['CENTER PEDESTAL',[ 'park','PARKING BRAKE','thrustUp','THRUST INCREASE','thrustDown','THRUST DECREASE']],['RADIO / MCDU',['mcdu','MCDU INPUT','radio','RADIO PANEL']]]:[['FLIGHT DISPLAYS',['pfd','PFD TEST','nd','ND MODE','ecam','ECAM PAGE','brightness','BRIGHTNESS']],['FLIGHT CONTROLS',['park','PARKING BRAKE','lights','PANEL LIGHTS']]];
-for(const [group,items] of groups){const sec=document.createElement('div');sec.className='section';sec.innerHTML='<h3>'+group+'</h3><div class="control-grid"></div>';const grid=sec.querySelector('.control-grid');for(let i=0;i<items.length;i+=2){const key=items[i],label=items[i+1];const b=document.createElement('button');b.className='toggle '+(state[key]?'on':'');b.innerHTML='<span>'+label+'</span><i></i>';b.onclick=()=>{if(key==='thrustUp'){thrust=Math.min(1,thrust+.1);throttle.position.y=1.25+thrust*.55;showToast('Thrust '+Math.round(thrust*100)+'%')}else if(key==='thrustDown'){thrust=Math.max(0,thrust-.1);throttle.position.y=1.25+thrust*.55;showToast('Thrust '+Math.round(thrust*100)+'%')}else if(key==='mcdu'||key==='radio'||key==='pfd'||key==='nd'||key==='ecam'||key==='brightness'){showToast(label+' selected')}else{state[key]=!state[key];refresh();renderDrawer(p)}};grid.appendChild(b)}drawerContent.appendChild(sec)}}
-let stepIndex=0;const steps=[['BAT 1 + BAT 2','Switch both battery controls on.'],['APU MASTER','Power the APU control circuit.'],['APU START','Request an APU start.'],['APU AVAILABLE','Training simulation confirms APU availability.'],['APU BLEED','Enable simulated pneumatic supply.'],['FUEL PUMPS','Enable engine fuel pump controls.'],['IGNITION','Enable simulated start ignition.'],['ENGINE 1 / 2','Use the engine controls to complete the demo.']];
-function renderSteps(){const el=document.querySelector('#steps');if(!el)return;el.innerHTML='';steps.forEach((s,i)=>{const d=document.createElement('div');d.className='step';d.innerHTML='<span class="dot '+(i<stepIndex?'done':'')+'"></span><span><b>'+s[0]+'</b><br><span class="tiny">'+s[1]+'</span></span>';el.appendChild(d)})}
-function nextStep(){const actions=[()=>{state.bat1=state.bat2=true},()=>state.apuMaster=true,()=>{state.apuStart=true;state.apuAvail=true},()=>state.apuAvail=true,()=>state.apuBleed=true,()=>{state.fuel1=state.fuel2=true},()=>state.ign=true,()=>{state.eng1=state.eng2=true}];if(stepIndex<actions.length){actions[stepIndex]();stepIndex++;refresh();renderSteps();showToast('Training step '+stepIndex+' of '+steps.length)}else showToast('Training flow complete')}
-function resetState(){Object.keys(state).forEach(k=>{if(typeof state[k]==='boolean')state[k]=k==='park'});stepIndex=0;thrust=0;throttle.position.y=1.25;overheadItems.forEach(i=>i.knob.material=white);refresh()}
-document.querySelectorAll('.dock button').forEach(b=>b.addEventListener('click',()=>openPanel(b.dataset.panel)));document.querySelector('#systemsBtn').onclick=()=>openPanel(state.panel||'overhead');document.querySelector('#closeDrawer').onclick=()=>drawer.classList.remove('open');document.querySelector('#viewBtn').onclick=()=>{viewMode=viewMode==='capt'?'fo':viewMode==='fo'?'overhead':'capt';setView()};
-refresh();setView();
-function animate(){requestAnimationFrame(animate);root.rotation.y+=(orbit.yaw-root.rotation.y)*.035;root.rotation.x+=(orbit.pitch-root.rotation.x)*.035;renderer.render(scene,camera)}animate();
+
+<!-- CRT scanline overlay -->
+<div class="intro-crt"></div>
+
+<!-- INTRO SCREEN -->
+<div id="intro">
+  <div class="intro-badge">Flight Simulation · A320-214 CFM</div>
+  <div class="intro-logo">A320</div>
+  <div class="intro-sub">Cockpit Simulator</div>
+  <div class="intro-sep"></div>
+  <div class="intro-info">
+    <div class="intro-stat"><span>Aircraft</span><b>A320-214</b></div>
+    <div class="intro-stat"><span>Registration</span><b>OE-LDC</b></div>
+    <div class="intro-stat"><span>Route</span><b>VIE → NAP</b></div>
+    <div class="intro-stat"><span>Status</span><b>Cold &amp; Dark</b></div>
+  </div>
+  <button class="intro-btn" onclick="startSim()"><span>▶ Enter Cockpit</span></button>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- TOP BAR -->
+  <div id="topbar">
+    <div class="tb-reg">OE-LDC</div>
+    <div class="tb-sep"></div>
+    <div class="tb-info"><b>A320-214</b></div>
+    <div class="tb-sep"></div>
+    <div class="tb-info">VIE → NAP · FL360</div>
+    <div class="tb-sep"></div>
+    <div class="phase-tag" id="phase-tag">Cold &amp; Dark</div>
+    <div class="tb-right">
+      <div class="pi-item"><div class="pi-dot" id="pi-bat"></div><div class="pi-lbl">BAT</div></div>
+      <div class="pi-item"><div class="pi-dot" id="pi-apu"></div><div class="pi-lbl">APU</div></div>
+      <div class="pi-item"><div class="pi-dot" id="pi-e1"></div><div class="pi-lbl">ENG1</div></div>
+      <div class="pi-item"><div class="pi-dot" id="pi-e2"></div><div class="pi-lbl">ENG2</div></div>
+      <div id="clock">00:00:00Z</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content">
+
+    <!-- OVERHEAD PANEL -->
+    <div id="overhead">
+
+      <div class="sec">
+        <div class="sec-t">Electrical</div>
+        <div class="srow">
+          <div class="swrap"><div class="snm">BAT 1</div><div class="pb" data-sw="off" id="sw-b1" onclick="actBat(0)"><div class="sw-led"></div><div class="sw-lbl">BAT<br>1</div></div></div>
+          <div class="swrap"><div class="snm">BAT 2</div><div class="pb" data-sw="off" id="sw-b2" onclick="actBat(1)"><div class="sw-led"></div><div class="sw-lbl">BAT<br>2</div></div></div>
+          <div class="vsep"></div>
+          <div class="swrap"><div class="snm">GEN 1</div><div class="pb" data-sw="off" id="sw-g1"><div class="sw-led"></div><div class="sw-lbl">GEN<br>1</div></div></div>
+          <div class="swrap"><div class="snm">GEN 2</div><div class="pb" data-sw="off" id="sw-g2"><div class="sw-led"></div><div class="sw-lbl">GEN<br>2</div></div></div>
+          <div class="swrap"><div class="snm">APU GEN</div><div class="pb" data-sw="off" id="sw-ag"><div class="sw-led"></div><div class="sw-lbl">APU<br>GEN</div></div></div>
+          <div class="swrap"><div class="snm">EXT PWR</div><div class="pb" data-sw="avail" id="sw-ep"><div class="sw-led"></div><div class="sw-lbl">EXT<br>PWR</div></div></div>
+          <div class="swrap"><div class="snm">BUS TIE</div><div class="pb" data-sw="on"><div class="sw-led"></div><div class="sw-lbl">BUS<br>TIE</div></div></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">APU</div>
+        <div class="srow">
+          <div class="swrap">
+            <div class="snm">Master SW</div>
+            <div class="gwrap">
+              <div class="gd" id="apu-gd" onclick="liftGuard()">Guard</div>
+              <div class="pb" data-sw="off" id="sw-am" onclick="actApuMaster()"><div class="sw-led"></div><div class="sw-lbl">Master<br>SW</div></div>
+            </div>
+          </div>
+          <div class="swrap"><div class="snm">Start</div><div class="pb" data-sw="off" id="sw-as" onclick="actApuStart()"><div class="sw-led"></div><div class="sw-lbl">Start</div></div></div>
+          <div class="vsep"></div>
+          <div class="swrap"><div class="snm">APU Bleed</div><div class="pb" data-sw="off" id="sw-ab" onclick="actApuBleed()"><div class="sw-led"></div><div class="sw-lbl">APU<br>Bleed</div></div></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">Fuel</div>
+        <div class="srow">
+          <div class="swrap"><div class="snm">L 1</div><div class="pb" data-sw="off" id="sw-fl1" onclick="actFuel(0)"><div class="sw-led"></div><div class="sw-lbl">Pump<br>L1</div></div></div>
+          <div class="swrap"><div class="snm">CTR 1</div><div class="pb" data-sw="off" id="sw-fc1" onclick="actFuel(1)"><div class="sw-led"></div><div class="sw-lbl">Pump<br>CTR1</div></div></div>
+          <div class="swrap"><div class="snm">R 1</div><div class="pb" data-sw="off" id="sw-fr1" onclick="actFuel(2)"><div class="sw-led"></div><div class="sw-lbl">Pump<br>R1</div></div></div>
+          <div class="vsep"></div>
+          <div class="swrap"><div class="snm">L 2</div><div class="pb" data-sw="off" id="sw-fl2" onclick="actFuel(3)"><div class="sw-led"></div><div class="sw-lbl">Pump<br>L2</div></div></div>
+          <div class="swrap"><div class="snm">CTR 2</div><div class="pb" data-sw="off" id="sw-fc2" onclick="actFuel(4)"><div class="sw-led"></div><div class="sw-lbl">Pump<br>CTR2</div></div></div>
+          <div class="swrap"><div class="snm">R 2</div><div class="pb" data-sw="off" id="sw-fr2" onclick="actFuel(5)"><div class="sw-led"></div><div class="sw-lbl">Pump<br>R2</div></div></div>
+          <div class="vsep"></div>
+          <div class="swrap"><div class="snm">X Feed</div><div class="pb" data-sw="off" id="sw-xf"><div class="sw-led"></div><div class="sw-lbl">X<br>Feed</div></div></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">Hydraulics</div>
+        <div class="srow">
+          <div style="font-family:var(--mono);font-size:10px;color:#2244aa;align-self:center;letter-spacing:1px;text-transform:uppercase">Blue</div>
+          <div class="swrap"><div class="snm">Elec Pump</div><div class="pb" data-sw="off" id="sw-hb" onclick="actHyd(0)"><div class="sw-led"></div><div class="sw-lbl">Elec<br>Pump</div></div></div>
+          <div class="vsep"></div>
+          <div style="font-family:var(--mono);font-size:10px;color:#226622;align-self:center;letter-spacing:1px;text-transform:uppercase">Green</div>
+          <div class="swrap"><div class="snm">Elec Pump</div><div class="pb" data-sw="off" id="sw-hg" onclick="actHyd(1)"><div class="sw-led"></div><div class="sw-lbl">Elec<br>Pump</div></div></div>
+          <div class="vsep"></div>
+          <div style="font-family:var(--mono);font-size:10px;color:#886600;align-self:center;letter-spacing:1px;text-transform:uppercase">Yellow</div>
+          <div class="swrap"><div class="snm">Elec Pump</div><div class="pb" data-sw="off" id="sw-hy" onclick="actHyd(2)"><div class="sw-led"></div><div class="sw-lbl">Elec<br>Pump</div></div></div>
+          <div class="vsep"></div>
+          <div class="swrap"><div class="snm">Eng 1A</div><div class="pb" data-sw="dim"><div class="sw-led"></div><div class="sw-lbl">Pump<br>1A</div></div></div>
+          <div class="swrap"><div class="snm">Eng 1B</div><div class="pb" data-sw="dim"><div class="sw-led"></div><div class="sw-lbl">Pump<br>1B</div></div></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">ADIRS</div>
+        <div class="srow" style="gap:18px">
+          <div class="swrap"><div class="snm">ADIRU 1</div><div class="rot" onclick="actAdirs(0)"><div class="rot-ln" id="ad0"></div></div><div class="rot-lbl" id="ad0-lbl">OFF</div></div>
+          <div class="swrap"><div class="snm">ADIRU 2</div><div class="rot" onclick="actAdirs(1)"><div class="rot-ln" id="ad1"></div></div><div class="rot-lbl" id="ad1-lbl">OFF</div></div>
+          <div class="swrap"><div class="snm">ADIRU 3</div><div class="rot" onclick="actAdirs(2)"><div class="rot-ln" id="ad2"></div></div><div class="rot-lbl" id="ad2-lbl">OFF</div></div>
+          <div style="font-family:var(--mono);font-size:10px;color:#2a2a3a;margin-left:8px;align-self:center;line-height:1.6;text-transform:uppercase;letter-spacing:.5px">Click to<br>cycle<br>OFF→NAV</div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">Lights</div>
+        <div class="srow">
+          <div class="swrap"><div class="snm">Beacon</div><div class="pb" data-sw="off" id="sw-bcn" onclick="actBeacon()"><div class="sw-led"></div><div class="sw-lbl">BCN</div></div></div>
+          <div class="swrap"><div class="snm">Strobe</div><div class="pb" data-sw="dim"><div class="sw-led"></div><div class="sw-lbl">Strobe</div></div></div>
+          <div class="swrap"><div class="snm">NAV</div><div class="pb" data-sw="dim"><div class="sw-led"></div><div class="sw-lbl">NAV</div></div></div>
+          <div class="swrap"><div class="snm">Logo</div><div class="pb" data-sw="dim"><div class="sw-led"></div><div class="sw-lbl">Logo</div></div></div>
+        </div>
+      </div>
+
+      <div class="sec" style="border-color:#2a1515">
+        <div class="sec-t" style="color:#5a2222">Engine Start</div>
+        <div class="srow" style="gap:20px;align-items:center">
+          <div class="swrap">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim)">ON</div>
+            <div class="tog" id="tog-e1" onclick="actEngMaster(0)"><div class="tog-lv dn" id="lv-e1"></div></div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim)">OFF</div>
+            <div class="snm" style="margin-top:4px">ENG 1<br>Master</div>
+          </div>
+          <div class="swrap">
+            <div class="rot" onclick="actEngMode()" style="width:64px;height:64px"><div class="rot-ln" id="eml" style="height:22px"></div></div>
+            <div class="rot-lbl" id="em-lbl">NORM</div>
+            <div class="snm">ENG Mode</div>
+            <div style="font-family:var(--mono);font-size:9px;color:#2a2a3a;text-align:center;line-height:1.4;text-transform:uppercase;margin-top:2px">Crank / Norm<br>IGN-Start</div>
+          </div>
+          <div class="swrap">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim)">ON</div>
+            <div class="tog" id="tog-e2" onclick="actEngMaster(1)"><div class="tog-lv dn" id="lv-e2"></div></div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim)">OFF</div>
+            <div class="snm" style="margin-top:4px">ENG 2<br>Master</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /overhead -->
+
+    <!-- RIGHT PANEL -->
+    <div id="right">
+      <div id="ecam">
+        <div id="ecam-title">STS</div>
+        <div id="ecam-body"><div class="no-pwr">— NO POWER —</div></div>
+      </div>
+      <div id="checklist">
+        <div class="cl-head">▸ Startup Checklist</div>
+        <div id="cl-items"></div>
+      </div>
+      <div id="statusbar">
+        <span id="sb-phase">COLD &amp; DARK</span>
+        <span id="sb-step">STEP 1/19</span>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /app -->
+
+<script>
+const S={
+  bat:[false,false],
+  guard:false,apuMaster:false,apuStart:false,apuT:0,apuAvail:false,apuBleed:false,
+  fuel:[false,false,false,false,false,false],
+  hyd:[false,false,false],
+  adirs:[0,0,0],
+  beacon:false,
+  engMode:1,
+  engMaster:[false,false],
+  engT:[0,0],engState:[0,0],
+  engN2:[0,0],engN1:[0,0],engEGT:[0,0],engFF:[0,0]
+};
+
+const ADIRS_A=[-120,0,120],ADIRS_L=['OFF','NAV','ATT'];
+const EM_A=[-60,0,60],EM_L=['CRANK','NORM','IGN/START'];
+
+const PROC=[
+  {t:'BAT 1 → ON',d:()=>S.bat[0]},
+  {t:'BAT 2 → ON',d:()=>S.bat[1]},
+  {t:'APU MASTER guard → open',d:()=>S.guard},
+  {t:'APU MASTER SW → ON',d:()=>S.apuMaster},
+  {t:'APU START → ON',d:()=>S.apuStart||S.apuAvail},
+  {t:'Wait: APU AVAIL…',d:()=>S.apuAvail,w:true},
+  {t:'APU BLEED → ON',d:()=>S.apuBleed},
+  {t:'All 6 fuel pumps → ON',d:()=>S.fuel.every(v=>v)},
+  {t:'HYD elec pumps → ON (3)',d:()=>S.hyd.every(v=>v)},
+  {t:'ADIRS 1, 2, 3 → NAV',d:()=>S.adirs.every(v=>v===1)},
+  {t:'Beacon → ON',d:()=>S.beacon},
+  {t:'ENG MODE → IGN/START',d:()=>S.engMode===2},
+  {t:'ENG 1 MASTER → ON',d:()=>S.engMaster[0]},
+  {t:'Wait: ENG 1 N2 > 50%…',d:()=>S.engState[0]===2,w:true},
+  {t:'ENG 2 MASTER → ON',d:()=>S.engMaster[1]},
+  {t:'Wait: ENG 2 N2 > 50%…',d:()=>S.engState[1]===2,w:true},
+  {t:'ENG MODE → NORM',d:()=>S.engMode===1&&S.engState[0]===2},
+  {t:'APU BLEED → OFF',d:()=>!S.apuBleed&&S.engState.some(v=>v===2)},
+  {t:'APU MASTER → OFF',d:()=>!S.apuMaster&&!S.apuStart},
+];
+
+let aC=null;
+function ga(){if(!aC)aC=new(window.AudioContext||window.webkitAudioContext)();return aC;}
+
+function click(){
+  try{
+    const c=ga(),b=c.createBuffer(1,512,c.sampleRate),d=b.getChannelData(0);
+    for(let i=0;i<512;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/60);
+    const s=c.createBufferSource(),g=c.createGain();
+    s.buffer=b;s.connect(g);g.connect(c.destination);g.gain.value=.3;s.start();
+  }catch(e){}
+}
+
+let apuOsc=null;
+function apuSound(){
+  try{
+    const c=ga();apuOsc=c.createOscillator();
+    const g=c.createGain(),f=c.createBiquadFilter();
+    f.type='lowpass';f.frequency.value=400;
+    apuOsc.connect(f);f.connect(g);g.connect(c.destination);
+    apuOsc.frequency.setValueAtTime(180,c.currentTime);
+    apuOsc.frequency.linearRampToValueAtTime(700,c.currentTime+20);
+    g.gain.setValueAtTime(.004,c.currentTime);
+    g.gain.linearRampToValueAtTime(.035,c.currentTime+8);
+    g.gain.linearRampToValueAtTime(.025,c.currentTime+20);
+    apuOsc.start();
+  }catch(e){}
+}
+
+function engSound(i){
+  try{
+    const c=ga(),o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();
+    f.type='lowpass';f.frequency.value=280;
+    o.connect(f);f.connect(g);g.connect(c.destination);
+    const base=i===0?78:84;
+    o.frequency.setValueAtTime(base,c.currentTime);
+    o.frequency.linearRampToValueAtTime(base+170,c.currentTime+38);
+    g.gain.setValueAtTime(.003,c.currentTime);
+    g.gain.linearRampToValueAtTime(.06,c.currentTime+38);
+    o.start();
+  }catch(e){}
+}
+
+function sw(id,st){const e=document.getElementById(id);if(e)e.dataset.sw=st;}
+
+function actBat(i){
+  if(!S.bat.some(v=>v)&&!S.bat[i])try{ga()}catch(e){}
+  click();S.bat[i]=!S.bat[i];
+  sw('sw-b'+(i+1),S.bat[i]?'on':'off');rend();
+}
+function liftGuard(){
+  if(S.guard)return;click();S.guard=true;
+  document.getElementById('apu-gd').classList.add('lifted');rend();
+}
+function actApuMaster(){
+  if(!S.guard||!S.bat.some(v=>v))return;click();
+  S.apuMaster=!S.apuMaster;
+  if(!S.apuMaster){
+    S.apuStart=false;S.apuAvail=false;S.apuBleed=false;
+    if(apuOsc)try{apuOsc.stop()}catch(e){}
+    sw('sw-ag','off');
+  }
+  sw('sw-am',S.apuMaster?'on':'off');rend();
+}
+function actApuStart(){
+  if(!S.apuMaster||S.apuAvail)return;click();
+  S.apuStart=true;S.apuT=Date.now();apuSound();
+  sw('sw-as','on');rend();
+}
+function actApuBleed(){
+  if(!S.apuAvail&&!S.apuBleed)return;click();
+  S.apuBleed=!S.apuBleed;sw('sw-ab',S.apuBleed?'on':'off');rend();
+}
+function actFuel(i){
+  if(!S.bat.some(v=>v))return;click();S.fuel[i]=!S.fuel[i];
+  const ids=['sw-fl1','sw-fc1','sw-fr1','sw-fl2','sw-fc2','sw-fr2'];
+  sw(ids[i],S.fuel[i]?'on':'off');rend();
+}
+function actHyd(i){
+  if(!S.bat.some(v=>v))return;click();S.hyd[i]=!S.hyd[i];
+  const ids=['sw-hb','sw-hg','sw-hy'];sw(ids[i],S.hyd[i]?'on':'off');rend();
+}
+function actAdirs(i){
+  if(!S.bat.some(v=>v))return;click();
+  S.adirs[i]=(S.adirs[i]+1)%3;
+  document.getElementById('ad'+i).style.transform='rotate('+ADIRS_A[S.adirs[i]]+'deg)';
+  document.getElementById('ad'+i+'-lbl').textContent=ADIRS_L[S.adirs[i]];rend();
+}
+function actBeacon(){
+  if(!S.bat.some(v=>v))return;click();S.beacon=!S.beacon;
+  sw('sw-bcn',S.beacon?'on':'off');rend();
+}
+function actEngMode(){
+  if(!S.bat.some(v=>v))return;click();S.engMode=(S.engMode+1)%3;
+  document.getElementById('eml').style.transform='rotate('+EM_A[S.engMode]+'deg)';
+  document.getElementById('em-lbl').textContent=EM_L[S.engMode];rend();
+}
+function actEngMaster(i){
+  if(!S.apuAvail||S.engMode!==2||S.engMaster[i])return;click();
+  S.engMaster[i]=true;S.engState[i]=1;S.engT[i]=Date.now();
+  document.getElementById('lv-e'+(i+1)).className='tog-lv up';
+  engSound(i);rend();
+}
+
+function tick(){
+  for(let i=0;i<2;i++){
+    if(S.engState[i]===1){
+      const el=(Date.now()-S.engT[i])/1000,tot=38,p=Math.min(el/tot,1);
+      S.engN2[i]=p*58.5;
+      S.engN1[i]=Math.max(0,(el-10)/28)*21.5;
+      if(el<12)S.engEGT[i]=el*20;
+      else if(el<18)S.engEGT[i]=240+(el-12)*76;
+      else if(el<26)S.engEGT[i]=696-(el-18)*30;
+      else S.engEGT[i]=456;
+      S.engFF[i]=p*820;
+      if(p>=1){
+        S.engState[i]=2;S.engN2[i]=58.5;S.engN1[i]=21.5;
+        S.engEGT[i]=456;S.engFF[i]=820;
+        sw('sw-g'+(i+1),'on');
+      }
+    }
+  }
+  if(S.apuStart&&!S.apuAvail){
+    if((Date.now()-S.apuT)>=20000){
+      S.apuAvail=true;sw('sw-as','avail');sw('sw-ag','on');
+    }
+  }
+  rend();
+}
+
+function curStep(){for(let i=0;i<PROC.length;i++)if(!PROC[i].d())return i;return PROC.length;}
+
+function rend(){
+  // top dots
+  document.getElementById('pi-bat').className='pi-dot'+(S.bat.some(v=>v)?' on':'');
+  document.getElementById('pi-apu').className='pi-dot'+(S.apuAvail?' on':'');
+  document.getElementById('pi-e1').className='pi-dot'+(S.engState[0]===2?' on':S.engState[0]===1?' warn':'');
+  document.getElementById('pi-e2').className='pi-dot'+(S.engState[1]===2?' on':S.engState[1]===1?' warn':'');
+
+  // checklist
+  const cur=curStep();
+  let cl='';
+  for(let i=0;i<PROC.length;i++){
+    const done=i<cur,isc=i===cur,isw=isc&&PROC[i].w;
+    const cls=done?'done':isc?(isw?'wait':'cur'):'pend';
+    const ic=done?'✓':isc?(isw?'⌛':'▶'):'○';
+    cl+=`<div class="cl-step ${cls}"><div class="cl-ic">${ic}</div><span>${PROC[i].t}</span></div>`;
+  }
+  if(cur>=PROC.length)cl+=`<div class="cl-complete">★ STARTUP COMPLETE — engines at idle</div>`;
+  document.getElementById('cl-items').innerHTML=cl;
+  const itms=document.getElementById('cl-items').children;
+  if(itms[Math.max(0,cur-1)])itms[Math.max(0,cur-1)].scrollIntoView({behavior:'smooth',block:'nearest'});
+
+  // status bar step
+  document.getElementById('sb-step').textContent=`STEP ${Math.min(cur+1,PROC.length)}/${PROC.length}`;
+
+  // phase
+  const phases=['COLD & DARK','BATTERIES ON','APU STARTING','APU READY','ENG STARTING','ENGINES IDLE'];
+  let ph=0;
+  if(S.bat.some(v=>v))ph=1;
+  if(S.apuStart)ph=2;
+  if(S.apuAvail)ph=3;
+  if(S.engState.some(v=>v===1))ph=4;
+  if(S.engState.every(v=>v===2))ph=5;
+  document.getElementById('phase-tag').textContent=phases[ph];
+  document.getElementById('sb-phase').textContent=phases[ph];
+
+  // ECAM
+  const et=document.getElementById('ecam-title'),eb=document.getElementById('ecam-body');
+  const has=S.bat.some(v=>v)||S.apuAvail;
+  if(!has){et.textContent='STS';eb.innerHTML='<div class="no-pwr">— NO POWER —</div>';return;}
+
+  if(S.engState.some(v=>v>0)){
+    et.textContent='ENGINE';
+    const sl=s=>s===0?'<span class="ed">OFF</span>':s===1?'<span class="ea">STARTING</span>':'<span class="eg">IDLE</span>';
+    const bar=(v,max,hot)=>`<div class="ebar"><div class="ebarfill" style="width:${Math.min(100,v/max*100).toFixed(1)}%;background:${hot&&v>700?'#ffa000':'#00c87a'}"></div></div>`;
+    eb.innerHTML=`
+      <div class="er"><span style="color:#555">ENG 1</span>${sl(S.engState[0])}</div><div class="esep"></div>
+      <div class="er"><span class="ed">N1</span><span class="eg">${S.engN1[0].toFixed(1)}%</span></div>${bar(S.engN1[0],21.5,false)}
+      <div class="er"><span class="ed">N2</span><span class="eg">${S.engN2[0].toFixed(1)}%</span></div>${bar(S.engN2[0],58.5,false)}
+      <div class="er"><span class="ed">EGT</span><span class="${S.engEGT[0]>700?'ea':'eg'}">${Math.round(S.engEGT[0])}°C</span></div>${bar(S.engEGT[0],800,true)}
+      <div class="er"><span class="ed">FF</span><span class="eg">${Math.round(S.engFF[0])} KG/H</span></div>
+      <div class="esep" style="margin:6px 0"></div>
+      <div class="er"><span style="color:#555">ENG 2</span>${sl(S.engState[1])}</div><div class="esep"></div>
+      <div class="er"><span class="ed">N1</span><span class="eg">${S.engN1[1].toFixed(1)}%</span></div>${bar(S.engN1[1],21.5,false)}
+      <div class="er"><span class="ed">N2</span><span class="eg">${S.engN2[1].toFixed(1)}%</span></div>${bar(S.engN2[1],58.5,false)}
+      <div class="er"><span class="ed">EGT</span><span class="${S.engEGT[1]>700?'ea':'eg'}">${Math.round(S.engEGT[1])}°C</span></div>${bar(S.engEGT[1],800,true)}
+      <div class="er"><span class="ed">FF</span><span class="eg">${Math.round(S.engFF[1])} KG/H</span></div>`;
+    return;
+  }
+  if(S.apuStart){
+    et.textContent='APU';
+    const pct=S.apuAvail?100:Math.min(99,Math.round((Date.now()-S.apuT)/200));
+    eb.innerHTML=`
+      <div class="er"><span style="color:#555">APU</span><span class="${S.apuAvail?'eg':'ea'}">${S.apuAvail?'AVAIL':'STARTING'}</span></div><div class="esep"></div>
+      <div class="er"><span class="ed">N</span><span class="${S.apuAvail?'eg':'ea'}">${pct}%</span></div>
+      <div class="ebar"><div class="ebarfill" style="width:${pct}%;background:${S.apuAvail?'#00c87a':'#ffa000'}"></div></div>
+      <div class="er"><span class="ed">EGT</span><span class="${S.apuAvail?'eg':'ea'}">${S.apuAvail?'620':'—'}°C</span></div>
+      <div class="esep" style="margin:6px 0"></div>
+      <div class="er"><span class="ed">Bleed</span><span class="${S.apuBleed?'eg':'ed'}">${S.apuBleed?'ON':'OFF'}</span></div>
+      <div class="er"><span class="ed">Bleed PSI</span><span class="${S.apuBleed?'eg':'ed'}">${S.apuBleed?40:0}</span></div>
+      <div class="er"><span class="ed">Fuel CTR</span><span class="${S.fuel[1]||S.fuel[4]?'eg':'ea'}">${S.fuel[1]||S.fuel[4]?'PRES':'LO PRES'}</span></div>`;
+    return;
+  }
+  et.textContent='ELEC';
+  eb.innerHTML=`
+    <div class="er"><span style="color:#555">DC BUS 1</span><span class="${S.bat[0]?'eg':'ed'}">${S.bat[0]?'NORM':'OFF'}</span></div>
+    <div class="er"><span style="color:#555">DC BUS 2</span><span class="${S.bat[1]?'eg':'ed'}">${S.bat[1]?'NORM':'OFF'}</span></div>
+    <div class="er"><span style="color:#555">AC BUS 1</span><span class="ed">OFF</span></div>
+    <div class="er"><span style="color:#555">AC BUS 2</span><span class="ed">OFF</span></div>
+    <div class="esep"></div>
+    <div class="er"><span class="ed">BAT 1</span><span class="${S.bat[0]?'eg':'ed'}">${S.bat[0]?'26.5V':'OFF'}</span></div>
+    <div class="er"><span class="ed">BAT 2</span><span class="${S.bat[1]?'eg':'ed'}">${S.bat[1]?'26.5V':'OFF'}</span></div>
+    <div class="esep"></div>
+    <div class="er"><span class="ed">GEN 1</span><span class="ed">OFF</span></div>
+    <div class="er"><span class="ed">GEN 2</span><span class="ed">OFF</span></div>
+    <div class="er"><span class="ed">APU GEN</span><span class="${S.apuAvail?'eg':'ed'}">${S.apuAvail?'ON':'OFF'}</span></div>
+    <div class="er"><span class="ed">EXT PWR</span><span class="ea">AVAIL</span></div>`;
+}
+
+// clock
+function clock(){
+  const n=new Date(),h=String(n.getUTCHours()).padStart(2,'0'),m=String(n.getUTCMinutes()).padStart(2,'0'),s=String(n.getUTCSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent=`${h}:${m}:${s}Z`;
+}
+setInterval(clock,1000);clock();
+
+function startSim(){
+  try{ga()}catch(e){}
+  document.getElementById('intro').classList.add('out');
+  setTimeout(()=>{
+    document.getElementById('intro').style.display='none';
+    document.getElementById('app').classList.add('visible');
+    setInterval(tick,300);
+    rend();
+  },800);
+}
 </script>
-</body></html>
+</body>
+</html>
