@@ -75,6 +75,72 @@ body{display:flex;flex-direction:column;font-family:var(--head)}
 #clock{font-family:var(--mono);font-size:12px;color:var(--amber);letter-spacing:2px}
 .phase-tag{font-family:var(--mono);font-size:10px;letter-spacing:2px;padding:3px 10px;background:rgba(255,160,0,.08);border:1px solid var(--amber-dim);color:var(--amber);border-radius:1px;text-transform:uppercase}
 
+/* 2D view selector */
+.view-switch{display:flex;gap:4px;align-items:center;margin-left:4px}
+.view-tab{font-family:var(--mono);font-size:10px;letter-spacing:1px;padding:7px 10px;color:var(--text-dim);background:#080812;border:1px solid var(--border2);cursor:pointer;white-space:nowrap}
+.view-tab.active{color:var(--amber);border-color:var(--amber-dim);background:rgba(255,160,0,.08)}
+/* 2D forward cockpit view */
+#cockpit-view{flex:1;min-width:0;overflow:auto;padding:12px;background:#080811;display:flex;flex-direction:column;gap:12px}
+#cockpit-view[hidden],#overhead[hidden]{display:none!important}
+.cockpit-frame{background:linear-gradient(180deg,#20202a,#11111a 28%,#080810);border:1px solid #30303e;border-radius:5px;padding:12px;box-shadow:inset 0 1px 0 #41414c,0 8px 24px #0008}
+.cockpit-caption{display:flex;justify-content:space-between;align-items:center;color:#737386;font:10px var(--mono);letter-spacing:2px;margin-bottom:10px}
+.main-panel{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:stretch}
+.display-unit{min-width:0;background:#020308;border:5px solid #242430;border-radius:4px;box-shadow:0 0 0 1px #050509,inset 0 0 12px #000;aspect-ratio:1.28;position:relative;overflow:hidden;color:#dce8f1;font-family:var(--mono);padding:8px}
+.du-title{font-size:9px;letter-spacing:1px;color:#8d9ba8;border-bottom:1px solid #27303a;padding-bottom:4px;margin-bottom:6px}
+.pfd-sky{height:45%;background:linear-gradient(#164a72 0 50%,#b1a27c 50% 54%,#534d3d 54%);position:relative;border:1px solid #53616a;overflow:hidden}
+.pfd-horizon{position:absolute;left:0;right:0;top:50%;height:2px;background:#f0dfaa}
+.pfd-wing{position:absolute;left:50%;top:48%;width:45%;height:3px;background:#f4f0d0;transform:translateX(-50%)}
+.pfd-wing:after{content:"";position:absolute;left:48%;top:-5px;width:4px;height:13px;background:#f4f0d0}
+.pfd-data{display:flex;justify-content:space-between;gap:6px;font-size:10px;color:#75e4d2;margin-top:6px}
+.pfd-bottom{font-size:9px;color:#e6d878;display:flex;justify-content:space-between;margin-top:5px}
+.nd-map{height:66%;position:relative;background:radial-gradient(ellipse at center,#12252c,#050b10 75%);border:1px solid #26383b;overflow:hidden}
+.nd-map:before{content:"";position:absolute;inset:-40%;background:repeating-linear-gradient(60deg,transparent 0 34px,#173a39 35px 36px),repeating-linear-gradient(-30deg,transparent 0 43px,#173a39 44px 45px)}
+.nd-route{position:absolute;left:50%;top:12%;height:80%;width:2px;background:#f0cf43;transform:rotate(24deg);box-shadow:0 0 5px #f0cf4388}
+.nd-plane{position:absolute;left:50%;top:49%;color:#fff;font-size:20px;transform:translate(-50%,-50%)}
+.nd-footer{font-size:9px;color:#e8d75a;display:flex;justify-content:space-between;margin-top:5px}
+.ecam-mini{font-size:10px;line-height:1.8}
+.ecam-mini .ok{color:#00d77e}.ecam-mini .warn{color:#ffb52e}.ecam-mini .muted{color:#4a5965}
+.fcu{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;align-items:center;background:#101019;border:1px solid #30303b;padding:10px}
+.fcu-readout{background:#030306;border:1px solid #262633;color:#f2b65a;text-align:center;font:15px var(--mono);padding:8px 2px;min-width:0}
+.fcu-readout small{display:block;font-size:8px;color:#8a8a9a;letter-spacing:1px;margin-bottom:4px}
+.fcu-knob{width:30px;height:30px;border-radius:50%;border:2px solid #454554;background:radial-gradient(circle at 35% 30%,#333341,#101017);margin:5px auto 0;position:relative}
+.fcu-knob:after{content:"";position:absolute;top:3px;left:13px;width:2px;height:8px;background:#e5e5e8}
+.pedestal{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ped-section{background:#11111c;border:1px solid #30303c;padding:10px;min-width:0}
+.ped-title{font:10px var(--mono);letter-spacing:2px;color:#88889b;border-bottom:1px solid #292938;padding-bottom:6px;margin-bottom:8px}
+.ped-buttons{display:flex;flex-wrap:wrap;gap:6px}
+.ped-button{background:#090911;border:1px solid #373747;color:#aeb0c0;padding:9px 10px;font:10px var(--mono);letter-spacing:.5px;cursor:pointer}
+.ped-button:active,.ped-button.selected{border-color:var(--amber);color:var(--amber);background:#211807}
+.mcdu{max-width:240px;margin:auto;background:#171722;border:5px solid #333342;border-radius:4px;padding:8px}
+.mcdu-screen{min-height:76px;background:#031009;border:1px solid #24432d;color:#79df89;font:10px/1.6 var(--mono);padding:7px;margin-bottom:8px}
+.mcdu-keys{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.mcdu-keys button{padding:7px 0;background:#08080e;border:1px solid #373744;color:#c2c2cf;font:9px var(--mono);cursor:pointer}
+.cockpit-hint{font:10px var(--mono);color:#66667a;letter-spacing:.5px;text-align:center}
+@media(max-width:850px){
+ #topbar{gap:8px;padding:0 8px;height:auto;min-height:42px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}
+ .tb-info{display:none}.tb-right{gap:7px}
+ .view-switch{order:5;width:100%;margin:0}.view-tab{flex:1}
+ #content{min-height:0}
+ #right{width:220px}
+ #cockpit-view{padding:7px;gap:7px}
+ .main-panel{gap:5px}.display-unit{border-width:3px;padding:5px}
+ .fcu{gap:3px;padding:5px}.fcu-readout{font-size:11px;padding:6px 1px}
+}
+@media(max-width:600px){
+ #content{flex-direction:column}
+ #cockpit-view,#overhead{min-height:42vh}
+ #right{width:100%;height:38vh;min-height:180px;border-left:0;border-top:1px solid var(--border)}
+ #ecam{display:none}
+ .main-panel{grid-template-columns:1fr 1fr}
+ .display-unit:last-child{grid-column:1/-1;aspect-ratio:2.2}
+ .fcu{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .pedestal{grid-template-columns:1fr}
+ .intro-logo{font-size:56px}.intro-info{gap:14px;flex-wrap:wrap;justify-content:center}
+ .intro-stat b{font-size:12px}.intro-sep{width:70%}
+ .pb{width:52px;height:52px}.gwrap{width:52px}.rot{width:50px;height:50px}
+ .srow{gap:5px}
+}
+
 /* content area */
 #content{flex:1;display:flex;min-height:0}
 
@@ -267,6 +333,10 @@ body{display:flex;flex-direction:column;font-family:var(--head)}
     <div class="tb-info">VIE → NAP · FL360</div>
     <div class="tb-sep"></div>
     <div class="phase-tag" id="phase-tag">Cold &amp; Dark</div>
+    <div class="view-switch" role="group" aria-label="Cockpit view">
+      <button class="view-tab active" id="view-cockpit-btn" onclick="setView('cockpit')">▣ COCKPIT</button>
+      <button class="view-tab" id="view-overhead-btn" onclick="setView('overhead')">⌃ OVERHEAD</button>
+    </div>
     <div class="tb-right">
       <div class="pi-item"><div class="pi-dot" id="pi-bat"></div><div class="pi-lbl">BAT</div></div>
       <div class="pi-item"><div class="pi-dot" id="pi-apu"></div><div class="pi-lbl">APU</div></div>
@@ -279,8 +349,75 @@ body{display:flex;flex-direction:column;font-family:var(--head)}
   <!-- CONTENT -->
   <div id="content">
 
+    <!-- 2D FORWARD COCKPIT PANEL -->
+    <div id="cockpit-view">
+      <div class="cockpit-frame">
+        <div class="cockpit-caption"><span>FLIGHT DECK / MAIN INSTRUMENT PANEL</span><span>A320-214 · 2D VIEW</span></div>
+        <div class="main-panel">
+          <div class="display-unit" aria-label="Captain primary flight display">
+            <div class="du-title">PFD · CAPT</div>
+            <div class="pfd-sky"><div class="pfd-horizon"></div><div class="pfd-wing"></div></div>
+            <div class="pfd-data"><span>SPD <b id="pfd-speed">000</b></span><span>ALT <b id="pfd-alt">00000</b></span></div>
+            <div class="pfd-bottom"><span>HDG 270</span><span>V/S +000</span></div>
+          </div>
+          <div class="display-unit" aria-label="Navigation display">
+            <div class="du-title">ND · ARC</div>
+            <div class="nd-map"><div class="nd-route"></div><div class="nd-plane">✈</div></div>
+            <div class="nd-footer"><span>TRK 270°</span><span>RNG 10 NM</span></div>
+          </div>
+          <div class="display-unit" aria-label="Upper ECAM display">
+            <div class="du-title">ECAM · ENG</div>
+            <div class="ecam-mini">
+              <div style="display:flex;justify-content:space-between"><span>ENG 1</span><span id="main-eng1" class="muted">OFF</span></div>
+              <div>N1 <span id="main-n1-1" class="ok">0.0</span>%</div>
+              <div>N2 <span id="main-n2-1" class="ok">0.0</span>%</div>
+              <div>EGT <span id="main-egt-1" class="ok">0</span>°C</div>
+              <hr style="border:0;border-top:1px solid #1b2a24;margin:5px 0">
+              <div style="display:flex;justify-content:space-between"><span>ENG 2</span><span id="main-eng2" class="muted">OFF</span></div>
+              <div>N1 <span id="main-n1-2" class="ok">0.0</span>%</div>
+              <div>N2 <span id="main-n2-2" class="ok">0.0</span>%</div>
+              <div>EGT <span id="main-egt-2" class="ok">0</span>°C</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cockpit-frame">
+        <div class="cockpit-caption"><span>FLIGHT CONTROL UNIT</span><span>FCU</span></div>
+        <div class="fcu">
+          <div class="fcu-readout"><small>SPD</small><span id="fcu-spd">---</span><div class="fcu-knob"></div></div>
+          <div class="fcu-readout"><small>HDG</small>270<div class="fcu-knob"></div></div>
+          <div class="fcu-readout"><small>ALT</small>10000<div class="fcu-knob"></div></div>
+          <div class="fcu-readout"><small>V/S</small>+0000<div class="fcu-knob"></div></div>
+          <button class="ped-button" onclick="setView('overhead')">OVERHEAD ↗</button>
+          <button class="ped-button" onclick="setView('overhead')">ELEC / APU ↗</button>
+        </div>
+      </div>
+      <div class="pedestal">
+        <div class="ped-section">
+          <div class="ped-title">CENTER PEDESTAL</div>
+          <div class="ped-buttons">
+            <button class="ped-button" onclick="setView('overhead')">OVERHEAD PANEL</button>
+            <button class="ped-button" onclick="showMainNotice('MCDU · INIT A')">MCDU INIT</button>
+            <button class="ped-button" onclick="showMainNotice('RADIO MANAGEMENT')">RAD NAV</button>
+            <button class="ped-button" onclick="showMainNotice('PARKING BRAKE · SET')">PARK BRK</button>
+          </div>
+          <div id="main-notice" class="cockpit-hint" style="margin-top:10px">AIRCRAFT STATE: COLD &amp; DARK · SELECT OVERHEAD TO BEGIN</div>
+        </div>
+        <div class="ped-section">
+          <div class="ped-title">MCDU · FLIGHT MANAGEMENT</div>
+          <div class="mcdu">
+            <div class="mcdu-screen" id="mcdu-screen">A320 FLIGHT MANAGEMENT<br>----------------------<br>INIT A    INIT B<br>F-PLN    RAD NAV<br>DATA     SEC F-PLN</div>
+            <div class="mcdu-keys">
+              <button onclick="mcduKey('DIR')">DIR</button><button onclick="mcduKey('PROG')">PROG</button><button onclick="mcduKey('PERF')">PERF</button><button onclick="mcduKey('INIT')">INIT</button><button onclick="mcduKey('DATA')">DATA</button><button onclick="mcduKey('F-PLN')">F-PLN</button><button onclick="mcduKey('RAD')">RAD</button><button onclick="mcduKey('FUEL')">FUEL</button><button onclick="mcduKey('SEC')">SEC</button><button onclick="mcduKey('ATC')">ATC</button><button onclick="mcduKey('MENU')">MENU</button><button onclick="mcduKey('CLR')">CLR</button><button onclick="mcduKey('1')">1</button><button onclick="mcduKey('2')">2</button><button onclick="mcduKey('3')">3</button><button onclick="mcduKey('4')">4</button><button onclick="mcduKey('5')">5</button><button onclick="mcduKey('6')">6</button><button onclick="mcduKey('7')">7</button><button onclick="mcduKey('8')">8</button><button onclick="mcduKey('9')">9</button><button onclick="mcduKey('0')">0</button><button onclick="mcduKey('.')">.</button><button onclick="mcduKey('+/−')">+/−</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cockpit-hint">2D COCKPIT PANEL · USE THE TOP BUTTONS TO SWITCH BETWEEN MAIN PANEL AND OVERHEAD SWITCHES</div>
+    </div>
+
     <!-- OVERHEAD PANEL -->
-    <div id="overhead">
+    <div id="overhead" hidden>
 
       <div class="sec">
         <div class="sec-t">Electrical</div>
@@ -580,6 +717,7 @@ function tick(){
 function curStep(){for(let i=0;i<PROC.length;i++)if(!PROC[i].d())return i;return PROC.length;}
 
 function rend(){
+  updateMainDisplays();
   // top dots
   document.getElementById('pi-bat').className='pi-dot'+(S.bat.some(v=>v)?' on':'');
   document.getElementById('pi-apu').className='pi-dot'+(S.apuAvail?' on':'');
@@ -673,6 +811,53 @@ function clock(){
   document.getElementById('clock').textContent=`${h}:${m}:${s}Z`;
 }
 setInterval(clock,1000);clock();
+
+let mcduLine = "";
+function setView(view){
+  const cockpit = view === "cockpit";
+  document.getElementById("cockpit-view").hidden = !cockpit;
+  document.getElementById("overhead").hidden = cockpit;
+  document.getElementById("view-cockpit-btn").classList.toggle("active", cockpit);
+  document.getElementById("view-overhead-btn").classList.toggle("active", !cockpit);
+  document.getElementById("view-cockpit-btn").setAttribute("aria-pressed", String(cockpit));
+  document.getElementById("view-overhead-btn").setAttribute("aria-pressed", String(!cockpit));
+}
+function showMainNotice(message){
+  const el=document.getElementById("main-notice");
+  if(el){el.textContent=message;el.dataset.manual="1";}
+}
+function mcduKey(key){
+  const screen=document.getElementById("mcdu-screen");
+  if(key==="CLR") mcduLine="";
+  else if(key==="MENU") mcduLine="MCDU MENU";
+  else mcduLine=(mcduLine+key+" ").slice(-32);
+  screen.innerHTML="A320 FLIGHT MANAGEMENT<br>----------------------<br>"+(mcduLine||"INIT A    INIT B<br>F-PLN    RAD NAV");
+}
+function updateMainDisplays(){
+  const ids=["main-eng1","main-eng2"];
+  for(let i=0;i<2;i++){
+    const state=S.engState[i];
+    const stateEl=document.getElementById(ids[i]);
+    if(stateEl){stateEl.textContent=state===2?"IDLE":state===1?"START":"OFF";stateEl.className=state===2?"ok":state===1?"warn":"muted";}
+    const n1=document.getElementById("main-n1-"+(i+1));
+    const n2=document.getElementById("main-n2-"+(i+1));
+    const egt=document.getElementById("main-egt-"+(i+1));
+    if(n1)n1.textContent=S.engN1[i].toFixed(1);
+    if(n2)n2.textContent=S.engN2[i].toFixed(1);
+    if(egt)egt.textContent=Math.round(S.engEGT[i]);
+  }
+  const powered=S.bat.some(v=>v)||S.apuAvail;
+  const speed=document.getElementById("pfd-speed");
+  const alt=document.getElementById("pfd-alt");
+  const fcu=document.getElementById("fcu-spd");
+  if(speed)speed.textContent=powered?"000":"---";
+  if(alt)alt.textContent=powered?"00000":"-----";
+  if(fcu)fcu.textContent=powered?"---":"---";
+  const notice=document.getElementById("main-notice");
+  if(notice && notice.dataset.manual!=="1"){
+    notice.textContent=S.engState.every(v=>v===2)?"STARTUP COMPLETE · BOTH ENGINES AT SIMULATED IDLE":S.apuAvail?"APU AVAILABLE · CONTINUE STARTUP FROM OVERHEAD":S.bat.some(v=>v)?"ELECTRICAL POWER ON · CONTINUE FROM OVERHEAD":"AIRCRAFT STATE: COLD & DARK · SELECT OVERHEAD TO BEGIN";
+  }
+}
 
 function startSim(){
   try{ga()}catch(e){}
