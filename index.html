@@ -299,7 +299,48 @@ body{display:flex;flex-direction:column;font-family:var(--head)}
   font-family:var(--mono);font-size:10px;color:var(--text-dim);
   display:flex;justify-content:space-between;letter-spacing:1px;flex-shrink:0;
 }
-.flight-deck-controls{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:10px}.control-card{background:#101019;border:1px solid #30303c;padding:10px;min-width:0}.control-title{font:10px var(--mono);letter-spacing:2px;color:#9999ad;border-bottom:1px solid #292938;padding-bottom:7px;margin-bottom:9px}.stick-area{height:145px;background:radial-gradient(ellipse,#20202c,#07070d 70%);border:1px solid #2c2c3d;position:relative;touch-action:none;border-radius:4px;overflow:hidden}.stick-cross{position:absolute;left:50%;top:50%;width:110px;height:110px;transform:translate(-50%,-50%);border:1px dashed #36364a;border-radius:50%}.stick-cross:before,.stick-cross:after{content:"";position:absolute;background:#29293a}.stick-cross:before{left:50%;top:0;bottom:0;width:1px}.stick-cross:after{top:50%;left:0;right:0;height:1px}.stick-handle{position:absolute;left:50%;top:50%;width:36px;height:36px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 25%,#55556a,#171722 70%);border:2px solid #77778b;box-shadow:0 3px 8px #000;touch-action:none}.control-readout{font:10px var(--mono);color:#8edcc5;display:flex;justify-content:space-between;margin-top:7px}.thrust-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.thrust-control{background:#08080e;border:1px solid #29293b;padding:8px;text-align:center}.thrust-control input{width:100%;accent-color:#ffa000;touch-action:pan-y}.thrust-value{font:12px var(--mono);color:#ffc36c;margin:5px 0}.control-btn{background:#090911;border:1px solid #373747;color:#c2c2cf;padding:8px 9px;font:10px var(--mono);cursor:pointer;margin:3px 2px 0 0}.control-btn.active{border-color:#00c87a;color:#00c87a}.system-status{font:10px/1.8 var(--mono);color:#a8a8b9;white-space:pre-line}.ecam-pages{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}.ecam-pages button{background:#090911;border:1px solid #373747;color:#aeb0c0;padding:7px 9px;font:10px var(--mono)}.ecam-pages button.active{color:#ffa000;border-color:#ffa000}.mcdu-screen{white-space:pre-line;min-height:105px}@media(max-width:850px){.flight-deck-controls{grid-template-columns:1fr 1fr}.control-card:last-child{grid-column:1/-1}}@media(max-width:600px){.flight-deck-controls{grid-template-columns:1fr}.control-card:last-child{grid-column:auto}.stick-area{height:130px}}</style>
+.flight-deck-controls{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:10px}.control-card{background:#101019;border:1px solid #30303c;padding:10px;min-width:0}.control-title{font:10px var(--mono);letter-spacing:2px;color:#9999ad;border-bottom:1px solid #292938;padding-bottom:7px;margin-bottom:9px}.stick-area{height:145px;background:radial-gradient(ellipse,#20202c,#07070d 70%);border:1px solid #2c2c3d;position:relative;touch-action:none;border-radius:4px;overflow:hidden}.stick-cross{position:absolute;left:50%;top:50%;width:110px;height:110px;transform:translate(-50%,-50%);border:1px dashed #36364a;border-radius:50%}.stick-cross:before,.stick-cross:after{content:"";position:absolute;background:#29293a}.stick-cross:before{left:50%;top:0;bottom:0;width:1px}.stick-cross:after{top:50%;left:0;right:0;height:1px}.stick-handle{position:absolute;left:50%;top:50%;width:36px;height:36px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 25%,#55556a,#171722 70%);border:2px solid #77778b;box-shadow:0 3px 8px #000;touch-action:none}.control-readout{font:10px var(--mono);color:#8edcc5;display:flex;justify-content:space-between;margin-top:7px}.thrust-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.thrust-control{background:#08080e;border:1px solid #29293b;padding:8px;text-align:center}.thrust-control input{width:100%;accent-color:#ffa000;touch-action:pan-y}.thrust-value{font:12px var(--mono);color:#ffc36c;margin:5px 0}.control-btn{background:#090911;border:1px solid #373747;color:#c2c2cf;padding:8px 9px;font:10px var(--mono);cursor:pointer;margin:3px 2px 0 0}.control-btn.active{border-color:#00c87a;color:#00c87a}.system-status{font:10px/1.8 var(--mono);color:#a8a8b9;white-space:pre-line}.ecam-pages{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}.ecam-pages button{background:#090911;border:1px solid #373747;color:#aeb0c0;padding:7px 9px;font:10px var(--mono)}.ecam-pages button.active{color:#ffa000;border-color:#ffa000}.mcdu-screen{white-space:pre-line;min-height:105px}@media(max-width:850px){.flight-deck-controls{grid-template-columns:1fr 1fr}.control-card:last-child{grid-column:1/-1}}@media(max-width:600px){.flight-deck-controls{grid-template-columns:1fr}.control-card:last-child{grid-column:auto}.stick-area{height:130px}}
+/* Keep the attitude indicator and primary controls together on iPad */
+#cockpit-view{overflow-y:auto;overflow-x:hidden}
+#cockpit-view>.cockpit-frame:first-child{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(255px,.85fr);column-gap:10px;align-content:start}
+#cockpit-view>.cockpit-frame:first-child>.cockpit-caption{grid-column:1/-1}
+#cockpit-view>.cockpit-frame:first-child>.main-panel{grid-column:1;grid-row:2;grid-template-columns:repeat(3,minmax(0,1fr));align-self:start}
+#cockpit-view>.cockpit-frame:first-child>.flight-deck-controls{grid-column:2;grid-row:2;grid-template-columns:1fr;align-content:start;gap:6px}
+#cockpit-view>.cockpit-frame:first-child .control-card{padding:7px}
+#cockpit-view>.cockpit-frame:first-child .control-title{margin-bottom:5px;padding-bottom:4px}
+#cockpit-view>.cockpit-frame:first-child .stick-area{height:90px}
+#cockpit-view>.cockpit-frame:first-child .stick-cross{width:68px;height:68px}
+#cockpit-view>.cockpit-frame:first-child .stick-handle{width:27px;height:27px}
+#cockpit-view>.cockpit-frame:first-child .control-readout{margin-top:4px}
+#cockpit-view>.cockpit-frame:first-child .thrust-control{padding:5px}
+#cockpit-view>.cockpit-frame:first-child .thrust-value{font-size:10px;margin:3px 0}
+#cockpit-view>.cockpit-frame:first-child .ecam-pages{margin-bottom:4px;gap:3px}
+#cockpit-view>.cockpit-frame:first-child .ecam-pages button{padding:5px 6px}
+#cockpit-view>.cockpit-frame:first-child .system-status{font-size:9px;line-height:1.45}
+#cockpit-view>.cockpit-frame:first-child .control-btn{padding:6px;font-size:9px}
+#cockpit-view>.cockpit-frame:first-child .cockpit-hint{font-size:8px}
+@media(max-width:850px){
+ #cockpit-view>.cockpit-frame:first-child{grid-template-columns:minmax(0,1.15fr) minmax(230px,.85fr);padding:7px;gap:6px}
+ #cockpit-view>.cockpit-frame:first-child>.main-panel{gap:4px}
+ #cockpit-view>.cockpit-frame:first-child .display-unit{aspect-ratio:1.05;padding:4px;border-width:2px}
+ #cockpit-view>.cockpit-frame:first-child .du-title{font-size:8px}
+ #cockpit-view>.cockpit-frame:first-child .ecam-mini{font-size:8px;line-height:1.5}
+ #cockpit-view>.cockpit-frame:first-child .pfd-data,#cockpit-view>.cockpit-frame:first-child .pfd-bottom,#cockpit-view>.cockpit-frame:first-child .nd-footer{font-size:7px}
+}
+@media(max-width:600px){
+ #cockpit-view>.cockpit-frame:first-child{grid-template-columns:minmax(0,1fr) minmax(155px,.8fr);padding:5px;gap:5px}
+ #cockpit-view>.cockpit-frame:first-child>.main-panel{grid-template-columns:1fr;gap:4px}
+ #cockpit-view>.cockpit-frame:first-child .display-unit{aspect-ratio:1.7;min-height:80px}
+ #cockpit-view>.cockpit-frame:first-child .display-unit:last-child{grid-column:auto}
+ #cockpit-view>.cockpit-frame:first-child .pfd-sky{height:40%}
+ #cockpit-view>.cockpit-frame:first-child .ecam-mini{font-size:8px}
+ #cockpit-view>.cockpit-frame:first-child .flight-deck-controls{grid-template-columns:1fr}
+ #cockpit-view>.cockpit-frame:first-child .thrust-row{gap:4px}
+ #cockpit-view>.cockpit-frame:first-child .stick-area{height:100px}
+ #cockpit-view>.cockpit-frame:first-child .control-card:last-child{grid-column:auto}
+}
+
+</style>
 </head>
 <body>
 
@@ -380,6 +421,26 @@ body{display:flex;flex-direction:column;font-family:var(--head)}
             </div>
           </div>
         </div>
+      <div class="flight-deck-controls">
+        <div class="control-card"><div class="control-title">SIDESTICK · CAPT</div>
+          <div class="stick-area" id="stick-area"><div class="stick-cross"></div><div class="stick-handle" id="stick-handle"></div></div>
+          <div class="control-readout"><span>PITCH</span><b id="pitch-readout">0°</b></div><div class="control-readout"><span>ROLL</span><b id="roll-readout">0°</b></div>
+          <button class="control-btn" onclick="centerStick()">CENTER STICK</button><div class="cockpit-hint">Touch-drag to control pitch and roll</div>
+        </div>
+        <div class="control-card"><div class="control-title">THRUST LEVERS</div><div class="thrust-row">
+          <div class="thrust-control"><div class="snm">ENG 1</div><div class="thrust-value" id="thrust1-value">IDLE · 0%</div><input id="thrust1" type="range" min="0" max="100" value="0" oninput="setThrust(0,this.value)"></div>
+          <div class="thrust-control"><div class="snm">ENG 2</div><div class="thrust-value" id="thrust2-value">IDLE · 0%</div><input id="thrust2" type="range" min="0" max="100" value="0" oninput="setThrust(1,this.value)"></div></div>
+          <button class="control-btn" onclick="setBothThrust(0)">IDLE</button><button class="control-btn" onclick="setBothThrust(50)">CLB</button><button class="control-btn" onclick="setBothThrust(100)">TOGA</button>
+          <div class="control-readout"><span>SIM IAS</span><b id="sim-speed">0 KT</b></div><div class="control-readout"><span>SIM ALT</span><b id="sim-alt">0 FT</b></div><div class="control-readout"><span>SIM HDG</span><b id="sim-hdg">270°</b></div>
+        </div>
+        <div class="control-card"><div class="control-title">ECAM SYSTEM PAGES</div><div class="ecam-pages">
+          <button id="ecam-page-eng" class="active" onclick="setEcamPage('ENG')">ENG</button><button id="ecam-page-elec" onclick="setEcamPage('ELEC')">ELEC</button><button id="ecam-page-hyd" onclick="setEcamPage('HYD')">HYD</button><button id="ecam-page-fuel" onclick="setEcamPage('FUEL')">FUEL</button><button id="ecam-page-doors" onclick="setEcamPage('DOOR')">DOOR</button></div>
+          <div id="cockpit-ecam-page" class="system-status">ENG 1: OFF
+ENG 2: OFF</div>
+          <button class="control-btn" onclick="toggleGear()">GEAR <span id="gear-label">DOWN</span></button><button class="control-btn" onclick="cycleFlaps()">FLAPS <span id="flap-label">0</span></button>
+          <div class="cockpit-hint">Simplified training model, not certified flight dynamics</div>
+        </div>
+      </div>
       </div>
       <div class="cockpit-frame">
         <div class="cockpit-caption"><span>FLIGHT CONTROL UNIT</span><span>FCU</span></div>
@@ -411,26 +472,6 @@ body{display:flex;flex-direction:column;font-family:var(--head)}
               <button onclick="mcduKey('DIR')">DIR</button><button onclick="mcduKey('PROG')">PROG</button><button onclick="mcduKey('PERF')">PERF</button><button onclick="mcduKey('INIT')">INIT</button><button onclick="mcduKey('DATA')">DATA</button><button onclick="mcduKey('F-PLN')">F-PLN</button><button onclick="mcduKey('RAD')">RAD</button><button onclick="mcduKey('FUEL')">FUEL</button><button onclick="mcduKey('SEC')">SEC</button><button onclick="mcduKey('ATC')">ATC</button><button onclick="mcduKey('MENU')">MENU</button><button onclick="mcduKey('CLR')">CLR</button><button onclick="mcduKey('1')">1</button><button onclick="mcduKey('2')">2</button><button onclick="mcduKey('3')">3</button><button onclick="mcduKey('4')">4</button><button onclick="mcduKey('5')">5</button><button onclick="mcduKey('6')">6</button><button onclick="mcduKey('7')">7</button><button onclick="mcduKey('8')">8</button><button onclick="mcduKey('9')">9</button><button onclick="mcduKey('0')">0</button><button onclick="mcduKey('.')">.</button><button onclick="mcduKey('+/−')">+/−</button>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="flight-deck-controls">
-        <div class="control-card"><div class="control-title">SIDESTICK · CAPT</div>
-          <div class="stick-area" id="stick-area"><div class="stick-cross"></div><div class="stick-handle" id="stick-handle"></div></div>
-          <div class="control-readout"><span>PITCH</span><b id="pitch-readout">0°</b></div><div class="control-readout"><span>ROLL</span><b id="roll-readout">0°</b></div>
-          <button class="control-btn" onclick="centerStick()">CENTER STICK</button><div class="cockpit-hint">Touch-drag to control pitch and roll</div>
-        </div>
-        <div class="control-card"><div class="control-title">THRUST LEVERS</div><div class="thrust-row">
-          <div class="thrust-control"><div class="snm">ENG 1</div><div class="thrust-value" id="thrust1-value">IDLE · 0%</div><input id="thrust1" type="range" min="0" max="100" value="0" oninput="setThrust(0,this.value)"></div>
-          <div class="thrust-control"><div class="snm">ENG 2</div><div class="thrust-value" id="thrust2-value">IDLE · 0%</div><input id="thrust2" type="range" min="0" max="100" value="0" oninput="setThrust(1,this.value)"></div></div>
-          <button class="control-btn" onclick="setBothThrust(0)">IDLE</button><button class="control-btn" onclick="setBothThrust(50)">CLB</button><button class="control-btn" onclick="setBothThrust(100)">TOGA</button>
-          <div class="control-readout"><span>SIM IAS</span><b id="sim-speed">0 KT</b></div><div class="control-readout"><span>SIM ALT</span><b id="sim-alt">0 FT</b></div><div class="control-readout"><span>SIM HDG</span><b id="sim-hdg">270°</b></div>
-        </div>
-        <div class="control-card"><div class="control-title">ECAM SYSTEM PAGES</div><div class="ecam-pages">
-          <button id="ecam-page-eng" class="active" onclick="setEcamPage('ENG')">ENG</button><button id="ecam-page-elec" onclick="setEcamPage('ELEC')">ELEC</button><button id="ecam-page-hyd" onclick="setEcamPage('HYD')">HYD</button><button id="ecam-page-fuel" onclick="setEcamPage('FUEL')">FUEL</button><button id="ecam-page-doors" onclick="setEcamPage('DOOR')">DOOR</button></div>
-          <div id="cockpit-ecam-page" class="system-status">ENG 1: OFF
-ENG 2: OFF</div>
-          <button class="control-btn" onclick="toggleGear()">GEAR <span id="gear-label">DOWN</span></button><button class="control-btn" onclick="cycleFlaps()">FLAPS <span id="flap-label">0</span></button>
-          <div class="cockpit-hint">Simplified training model, not certified flight dynamics</div>
         </div>
       </div>
       <div class="cockpit-hint">2D COCKPIT PANEL · USE THE TOP BUTTONS TO SWITCH BETWEEN MAIN PANEL AND OVERHEAD SWITCHES</div>
