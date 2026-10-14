@@ -299,7 +299,7 @@ body{display:flex;flex-direction:column;font-family:var(--head)}
   font-family:var(--mono);font-size:10px;color:var(--text-dim);
   display:flex;justify-content:space-between;letter-spacing:1px;flex-shrink:0;
 }
-.flight-deck-controls{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:10px}.control-card{background:#101019;border:1px solid #30303c;padding:10px;min-width:0}.control-title{font:10px var(--mono);letter-spacing:2px;color:#9999ad;border-bottom:1px solid #292938;padding-bottom:7px;margin-bottom:9px}.stick-area{height:145px;background:radial-gradient(ellipse,#20202c,#07070d 70%);border:1px solid #2c2c3d;position:relative;touch-action:none;border-radius:4px;overflow:hidden}.stick-cross{position:absolute;left:50%;top:50%;width:110px;height:110px;transform:translate(-50%,-50%);border:1px dashed #36364a;border-radius:50%}.stick-cross:before,.stick-cross:after{content:"";position:absolute;background:#29293a}.stick-cross:before{left:50%;top:0;bottom:0;width:1px}.stick-cross:after{top:50%;left:0;right:0;height:1px}.stick-handle{position:absolute;left:50%;top:50%;width:36px;height:36px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 25%,#55556a,#171722 70%);border:2px solid #77778b;box-shadow:0 3px 8px #000;touch-action:none}.control-readout{font:10px var(--mono);color:#8edcc5;display:flex;justify-content:space-between;margin-top:7px}.thrust-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.thrust-control{background:#08080e;border:1px solid #29293b;padding:8px;text-align:center}.thrust-control input{width:100%;accent-color:#ffa000;touch-action:pan-y}.thrust-value{font:12px var(--mono);color:#ffc36c;margin:5px 0}.control-btn{background:#090911;border:1px solid #373747;color:#c2c2cf;padding:8px 9px;font:10px var(--mono);cursor:pointer;margin:3px 2px 0 0}.control-btn.active{border-color:#00c87a;color:#00c87a}.system-status{font:10px/1.8 var(--mono);color:#a8a8b9;white-space:pre-line}.ecam-pages{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}.ecam-pages button{background:#090911;border:1px solid #373747;color:#aeb0c0;padding:7px 9px;font:10px var(--mono)}.ecam-pages button.active{color:#ffa000;border-color:#ffa000}.mcdu-screen{white-space:pre-line;min-height:105px}@media(max-width:850px){.flight-deck-controls{grid-template-columns:1fr 1fr}.control-card:last-child{grid-column:1/-1}}@media(max-width:600px){.flight-deck-controls{grid-template-columns:1fr}.control-card:last-child{grid-column:auto}.stick-area{height:130px}}
+.flight-deck-controls{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:10px}.control-card{background:#101019;border:1px solid #30303c;padding:10px;min-width:0}.control-title{font:10px var(--mono);letter-spacing:2px;color:#9999ad;border-bottom:1px solid #292938;padding-bottom:7px;margin-bottom:9px}.stick-area{height:145px;background:radial-gradient(ellipse,#20202c,#07070d 70%);border:1px solid #2c2c3d;position:relative;touch-action:none;border-radius:4px;overflow:hidden}.stick-cross{position:absolute;left:50%;top:50%;width:110px;height:110px;transform:translate(-50%,-50%);border:1px dashed #36364a;border-radius:50%}.stick-cross:before,.stick-cross:after{content:"";position:absolute;background:#29293a}.stick-cross:before{left:50%;top:0;bottom:0;width:1px}.stick-cross:after{top:50%;left:0;right:0;height:1px}.stick-handle{position:absolute;left:50%;top:50%;width:36px;height:36px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 25%,#55556a,#171722 70%);border:2px solid #77778b;box-shadow:0 3px 8px #000;touch-action:none}.stick-handle.recenter{transition:left .14s ease-out,top .14s ease-out}.stick-area{touch-action:none}.control-readout{font:10px var(--mono);color:#8edcc5;display:flex;justify-content:space-between;margin-top:7px}.thrust-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.thrust-control{background:#08080e;border:1px solid #29293b;padding:8px;text-align:center}.thrust-control input{width:100%;accent-color:#ffa000;touch-action:pan-y}.thrust-value{font:12px var(--mono);color:#ffc36c;margin:5px 0}.control-btn{background:#090911;border:1px solid #373747;color:#c2c2cf;padding:8px 9px;font:10px var(--mono);cursor:pointer;margin:3px 2px 0 0}.control-btn.active{border-color:#00c87a;color:#00c87a}.system-status{font:10px/1.8 var(--mono);color:#a8a8b9;white-space:pre-line}.ecam-pages{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}.ecam-pages button{background:#090911;border:1px solid #373747;color:#aeb0c0;padding:7px 9px;font:10px var(--mono)}.ecam-pages button.active{color:#ffa000;border-color:#ffa000}.mcdu-screen{white-space:pre-line;min-height:105px}@media(max-width:850px){.flight-deck-controls{grid-template-columns:1fr 1fr}.control-card:last-child{grid-column:1/-1}}@media(max-width:600px){.flight-deck-controls{grid-template-columns:1fr}.control-card:last-child{grid-column:auto}.stick-area{height:130px}}
 /* Keep the attitude indicator and primary controls together on iPad */
 #cockpit-view{overflow-y:auto;overflow-x:hidden}
 #cockpit-view>.cockpit-frame:first-child{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(255px,.85fr);column-gap:10px;align-content:start}
@@ -427,7 +427,7 @@ body{display:flex;flex-direction:column;font-family:var(--head)}
           <div class="control-readout"><span>PITCH</span><b id="pitch-readout">0°</b></div><div class="control-readout"><span>ROLL</span><b id="roll-readout">0°</b></div>
           <button class="control-btn" onclick="centerStick()">CENTER STICK</button><div class="cockpit-hint">Touch-drag to control pitch and roll</div>
         </div>
-        <div class="control-card"><div class="control-title">THRUST LEVERS</div><div class="thrust-row">
+        <div class="control-card"><div class="control-title">THRUST LEVERS</div><label class="cockpit-hint" style="display:flex;align-items:center;gap:6px;margin:0 0 8px;cursor:pointer"><input id="throttle-link" type="checkbox" checked onchange="toggleThrottleLink(this.checked)"> LINK BOTH ENGINES</label><div class="thrust-row">
           <div class="thrust-control"><div class="snm">ENG 1</div><div class="thrust-value" id="thrust1-value">IDLE · 0%</div><input id="thrust1" type="range" min="0" max="100" value="0" oninput="setThrust(0,this.value)"></div>
           <div class="thrust-control"><div class="snm">ENG 2</div><div class="thrust-value" id="thrust2-value">IDLE · 0%</div><input id="thrust2" type="range" min="0" max="100" value="0" oninput="setThrust(1,this.value)"></div></div>
           <button class="control-btn" onclick="setBothThrust(0)">IDLE</button><button class="control-btn" onclick="setBothThrust(50)">CLB</button><button class="control-btn" onclick="setBothThrust(100)">TOGA</button>
@@ -927,9 +927,31 @@ function updateMainDisplays(){
 /* Interactive cockpit trainer extensions */
 S.thrust=[0,0];S.pitch=0;S.roll=0;S.simSpeed=0;S.simAlt=0;S.simHeading=270;S.gearDown=true;S.flaps=0;
 let activeEcamPage="ENG",activeMcduPage="MCDU MENU",mcduScratchpad="";
-function setThrust(i,v){S.thrust[i]=Number(v);const e=document.getElementById("thrust"+(i+1)+"-value");if(e)e.textContent=(v==0?"IDLE":v>=95?"TOGA":v>=45?"CLB":"THR")+" · "+v+"%";updateFlightControls();}
-function setBothThrust(v){for(let i=0;i<2;i++){document.getElementById("thrust"+(i+1)).value=v;setThrust(i,v);}}
-function centerStick(){S.pitch=0;S.roll=0;updateFlightControls();}
+S.throttlesLinked=true;
+function setThrust(i,v){
+ const value=Number(v);
+ S.thrust[i]=value;
+ if(S.throttlesLinked){
+   const other=1-i;
+   S.thrust[other]=value;
+   const otherInput=document.getElementById("thrust"+(other+1));
+   if(otherInput)otherInput.value=value;
+ }
+ for(let n=0;n<2;n++){
+   const e=document.getElementById("thrust"+(n+1)+"-value");
+   const amount=S.thrust[n];
+   if(e)e.textContent=(amount===0?"IDLE":amount>=95?"TOGA":amount>=45?"CLB":"THR")+" · "+amount+"%";
+ }
+ updateFlightControls();
+}
+function toggleThrottleLink(linked){S.throttlesLinked=!!linked;if(linked)setThrust(0,S.thrust[0]);}
+function setBothThrust(v){for(let i=0;i<2;i++){const input=document.getElementById("thrust"+(i+1));if(input)input.value=v;S.thrust[i]=Number(v);}setThrust(0,v);}
+function centerStick(){
+ S.pitch=0;S.roll=0;
+ const h=document.getElementById("stick-handle");
+ if(h)h.classList.add("recenter");
+ updateFlightControls();
+}
 function toggleGear(){S.gearDown=!S.gearDown;updateFlightControls();renderCockpitEcam();}
 function cycleFlaps(){S.flaps=(S.flaps+1)%5;updateFlightControls();renderCockpitEcam();}
 function updateFlightControls(){
@@ -942,9 +964,32 @@ function updateFlightControls(){
 }
 function initStick(){
  const a=document.getElementById("stick-area");if(!a)return;let active=false;
- const move=e=>{if(!active)return;const r=a.getBoundingClientRect();S.roll=Math.max(-100,Math.min(100,(e.clientX-r.left-r.width/2)/(r.width/2)*100));S.pitch=Math.max(-100,Math.min(100,(e.clientY-r.top-r.height/2)/(r.height/2)*100));updateFlightControls();};
- a.addEventListener("pointerdown",e=>{active=true;a.setPointerCapture(e.pointerId);move(e);});a.addEventListener("pointermove",move);
- const stop=()=>{active=false;};a.addEventListener("pointerup",stop);a.addEventListener("pointercancel",stop);
+ const move=e=>{
+   if(!active)return;
+   const r=a.getBoundingClientRect();
+   S.roll=Math.max(-100,Math.min(100,(e.clientX-r.left-r.width/2)/(r.width/2)*100));
+   // Pulling the stick toward the pilot commands nose-up pitch.
+   S.pitch=Math.max(-100,Math.min(100,((r.top+r.height/2)-e.clientY)/(r.height/2)*100));
+   updateFlightControls();
+ };
+ const stop=()=>{
+   if(!active)return;
+   active=false;
+   S.pitch=0;S.roll=0;
+   const h=document.getElementById("stick-handle");
+   if(h)h.classList.add("recenter");
+   updateFlightControls();
+ };
+ a.addEventListener("pointerdown",e=>{
+   active=true;
+   const h=document.getElementById("stick-handle");
+   if(h)h.classList.remove("recenter");
+   if(a.setPointerCapture)a.setPointerCapture(e.pointerId);
+   move(e);
+ });
+ a.addEventListener("pointermove",move);
+ a.addEventListener("pointerup",stop);
+ a.addEventListener("pointercancel",stop);
 }
 function flightTick(){
  const dt=.1,avg=(S.thrust[0]+S.thrust[1])/2,engines=S.engState.filter(v=>v===2).length;
