@@ -992,8 +992,13 @@ function initStick(){
  a.addEventListener("pointercancel",stop);
 }
 function flightTick(){
- const dt=.1,avg=(S.thrust[0]+S.thrust[1])/2,engines=S.engState.filter(v=>v===2).length;
- S.simSpeed=Math.max(0,Math.min(340,S.simSpeed+(engines?((avg/100)*7-1.2): -2)*dt));
+ const dt=.1;
+ // Only running engines can generate thrust. An OFF engine contributes zero,
+ // regardless of where its throttle slider is positioned.
+ const runningThrust=S.thrust.reduce((sum,thrust,i)=>sum+(S.engState[i]===2?Number(thrust):0),0);
+ const runningEngines=S.engState.filter(v=>v===2).length;
+ const acceleration=runningEngines>0?((runningThrust/2)/100*7-1.2):-2;
+ S.simSpeed=Math.max(0,Math.min(340,S.simSpeed+acceleration*dt));
  S.simHeading=(S.simHeading+S.roll*.035*dt+360)%360;
  const lift=S.simSpeed>80?(S.simSpeed-80)/260:0;
  S.simAlt=Math.max(0,Math.min(39000,S.simAlt+(S.pitch/100*180+lift*80-10)*dt));
