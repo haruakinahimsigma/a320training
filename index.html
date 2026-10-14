@@ -340,6 +340,61 @@ body{display:flex;flex-direction:column;font-family:var(--head)}
  #cockpit-view>.cockpit-frame:first-child .control-card:last-child{grid-column:auto}
 }
 
+
+/* CLASSIC FLIGHT-SIM COCKPIT: fixed forward view + chunky 2D panel */
+#content{background:#171a1c}
+#cockpit-view{padding:0;gap:0;background:#16191b;overflow:auto;scrollbar-color:#555 #202326}
+.classic-windshield{
+  position:relative;flex:0 0 clamp(190px,34vh,360px);min-height:190px;overflow:hidden;
+  margin:10px 12px 0;border:10px solid #303336;border-bottom-width:16px;
+  border-radius:12px 12px 3px 3px;
+  box-shadow:inset 0 0 0 3px #101213,0 5px 0 #090a0b,0 10px 20px #0009;
+  background:linear-gradient(#6ca5d0 0%,#b8d9e9 53%,#d7d6bd 54%,#858b78 100%);
+}
+.classic-windshield:before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:3;
+  background:linear-gradient(115deg,#fff2 0%,transparent 24%,transparent 70%,#0002 100%);
+}
+.window-cloud{position:absolute;background:#eef5f5d9;filter:blur(2px);height:22px;border-radius:50%;opacity:.8}
+.cloud-a{width:160px;left:12%;top:18%}.cloud-b{width:210px;right:9%;top:28%;height:28px}.cloud-c{width:100px;left:56%;top:9%;height:15px}
+.window-horizon{position:absolute;left:-5%;right:-5%;top:57%;height:5px;background:#a7a68c;box-shadow:0 5px 0 #657967}
+.window-land{position:absolute;left:-10%;right:-10%;top:58%;height:45%;background:linear-gradient(165deg,#7e8b70 0 22%,#4f6a53 23% 39%,#777d69 40% 55%,#425f4c 56%);clip-path:polygon(0 25%,16% 0,33% 30%,51% 8%,69% 29%,84% 4%,100% 24%,100% 100%,0 100%)}
+.window-runway{position:absolute;left:50%;top:59%;width:18%;height:52%;transform:translateX(-50%);background:linear-gradient(90deg,#4b4e50,#282b2d 15%,#343739 85%,#55585a);clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);z-index:1}
+.window-runway:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0 17%,#f4f2d9 17% 20%,transparent 20% 32%);clip-path:polygon(49% 0,51% 0,57% 100%,43% 100%)}
+.window-runway:after{content:"";position:absolute;left:8%;right:8%;top:0;height:5px;background:#eee    <!-- CLASSIC MSFS-STYLE FORWARD WINDSHIELD -->
+    <div class="classic-windshield" aria-label="Forward view from the flight deck">
+      <div class="window-topbar"></div><div class="window-framebar"></div>
+      <div class="window-cloud cloud-a"></div><div class="window-cloud cloud-b"></div><div class="window-cloud cloud-c"></div>
+      <div class="window-horizon"></div><div class="window-land"></div><div class="window-runway"></div>
+      <div class="window-papi"><i></i><i></i><i></i><i></i></div>
+      <div class="window-label">FORWARD VIEW · RUNWAY ENVIRONMENT</div>
+    </div>
+
+}
+.window-papi{position:absolute;z-index:2;left:38%;top:71%;display:flex;gap:3px;transform:scale(.8)}
+.window-papi i{display:block;width:5px;height:4px;background:#fff;box-shadow:0 0 5px #fff}
+.window-framebar{position:absolute;z-index:4;left:50%;top:0;bottom:0;width:12px;background:linear-gradient(90deg,#17191a,#505456 45%,#242729);box-shadow:0 0 5px #0008}
+.window-topbar{position:absolute;z-index:4;left:0;right:0;top:0;height:13px;background:linear-gradient(#55595b,#272a2c)}
+.window-label{position:absolute;z-index:5;left:15px;bottom:7px;color:#e4e6df;font:10px var(--mono);letter-spacing:2px;text-shadow:0 1px 3px #000}
+.cockpit-frame{margin:0 12px;padding:12px;background:linear-gradient(180deg,#55595b,#303436 12%,#222527 100%);border:2px solid #686c6e;border-top:3px solid #777b7d;border-radius:3px;box-shadow:inset 0 2px 0 #9994,0 5px 10px #0009}
+.cockpit-caption{color:#c4c8c7}
+.display-unit{border:6px solid #111415;border-radius:2px;background:#020605;box-shadow:inset 0 0 0 1px #48504d,0 2px 0 #7775}
+.flight-deck-controls{gap:10px}
+.control-card{background:linear-gradient(#44484a,#2a2d2f 20%,#1c1f20);border:2px solid #65696a;border-radius:3px;box-shadow:inset 0 1px 0 #aaa5,0 3px 0 #111;padding:10px}
+.control-title,.ped-title{color:#d3d6d3}
+.control-btn,.ped-button{border-radius:2px;background:linear-gradient(#4d5254,#282c2e);border:1px solid #747a7b;color:#e0e3df;box-shadow:inset 0 1px 0 #aaa5,0 2px 0 #111}
+.control-btn:active,.ped-button:active{transform:translateY(1px);box-shadow:inset 0 1px 3px #000}
+#overhead{background:#25292b;padding:12px}
+.sec{background:linear-gradient(#4a4e50,#25292b);border:2px solid #64696b;box-shadow:inset 0 1px #aaa5,0 3px 0 #101213}
+#cockpit-view>.cockpit-hint{margin:8px 12px 14px}
+@media(max-width:760px){
+ .classic-windshield{margin:6px 6px 0;flex-basis:clamp(180px,31vh,260px);border-width:7px;border-bottom-width:12px}
+ .cockpit-frame{margin:0 6px;padding:8px}
+ .main-panel{gap:5px}
+ .display-unit{padding:4px;border-width:3px}
+ .du-title{font-size:7px}.pfd-data{font-size:8px}.pfd-bottom{font-size:7px}
+}
+
 </style>
 </head>
 <body>
